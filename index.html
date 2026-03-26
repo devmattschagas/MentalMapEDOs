@@ -3,15 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fluxograma Interativo de EDOs - Edição Definitiva</title>
-    
-    <!-- Tailwind CSS -->
+    <title>Mapa Mental de EDOs — Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Configuração do MathJax para LaTeX rigoroso -->
     <script>
         MathJax = {
             tex: {
@@ -24,247 +18,167 @@
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
     <style>
-        /* =========================================
-           ESTILOS DA ÁRVORE (FLUXOGRAMA)
-           ========================================= */
-        .tree ul {
-            padding-top: 24px; position: relative;
-            display: flex; justify-content: center;
-        }
-
-        .tree li {
-            float: left; text-align: center;
-            list-style-type: none;
-            position: relative;
-            padding: 24px 6px 0 6px; 
-        }
-
-        /* Conectores verticais e horizontais */
+        .tree ul { padding-top: 24px; position: relative; display: flex; justify-content: center; }
+        .tree li { float: left; text-align: center; list-style-type: none; position: relative; padding: 24px 6px 0 6px; }
         .tree li::before, .tree li::after {
-            content: ''; position: absolute; top: 0; right: 50%;
-            border-top: 2px solid #cbd5e1;
-            width: 50%; height: 24px;
+            content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #cbd5e1; width: 50%; height: 24px;
         }
-        .tree li::after {
-            right: auto; left: 50%;
-            border-left: 2px solid #cbd5e1;
-        }
-
+        .tree li::after { right: auto; left: 50%; border-left: 2px solid #cbd5e1; }
         .tree li:only-child::after, .tree li:only-child::before { display: none; }
         .tree li:only-child { padding-top: 0; }
-
         .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
-        .tree li:last-child::before {
-            border-right: 2px solid #cbd5e1;
-            border-radius: 0 10px 0 0;
-        }
-        .tree li:first-child::after {
-            border-radius: 10px 0 0 0;
-        }
+        .tree li:last-child::before { border-right: 2px solid #cbd5e1; border-radius: 0 10px 0 0; }
+        .tree li:first-child::after { border-radius: 10px 0 0 0; }
+        .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #cbd5e1; width: 0; height: 24px; }
 
-        .tree ul ul::before {
-            content: ''; position: absolute; top: 0; left: 50%;
-            border-left: 2px solid #cbd5e1;
-            width: 0; height: 24px;
-        }
-
-        /* =========================================
-           ESTILOS DOS NÓS (CAIXINHAS)
-           ========================================= */
         .tree li a {
-            border: 1px solid #e2e8f0;
-            padding: 12px 14px;
-            text-decoration: none;
-            color: #334155;
+            border: 1px solid #e2e8f0; padding: 12px 14px; text-decoration: none; color: #334155;
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            font-size: 13.5px;
-            font-weight: 600;
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 14px;
-            background: #ffffff;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-            min-width: 140px;
-            white-space: nowrap;
-            position: relative;
-            overflow: hidden;
+            font-size: 13.5px; font-weight: 600; display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 14px; background: #ffffff; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05); min-width: 140px; white-space: nowrap;
+            position: relative; overflow: hidden;
         }
-
-        .tree li a::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0;
-            height: 4px; background: #94a3b8; transition: background 0.2s;
-        }
-
-        .tree li a:hover, .tree li a.active {
-            background: #f8fafc; transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); border-color: #cbd5e1;
-        }
+        .tree li a::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #94a3b8; transition: background 0.2s; }
+        .tree li a:hover, .tree li a.active { background: #f8fafc; transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); border-color: #cbd5e1; }
         .tree li a:hover::before, .tree li a.active::before { background: #3b82f6; }
-
         .tree li a .icon { font-size: 18px; margin-bottom: 6px; color: #64748b; transition: color 0.2s; }
         .tree li a:hover .icon, .tree li a.active .icon { color: #3b82f6; }
 
-        /* =========================================
-           NÓS FINAIS E ESPECIAIS
-           ========================================= */
         .tree li a.method-node { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
         .tree li a.method-node::before { background: #22c55e; height: 5px; }
-        .tree li a.method-node:hover, .tree li a.method-node.active {
-            background: #dcfce7; transform: translateY(-4px); box-shadow: 0 12px 20px -3px rgb(34 197 94 / 0.2);
-        }
+        .tree li a.method-node:hover, .tree li a.method-node.active { background: #dcfce7; transform: translateY(-4px); box-shadow: 0 12px 20px -3px rgb(34 197 94 / 0.2); }
         .tree li a.method-node .icon { color: #16a34a; }
 
         .tree li a.special-node { background: #fffbeb; border-color: #fde68a; color: #92400e; }
         .tree li a.special-node::before { background: #f59e0b; height: 5px; }
-        .tree li a.special-node:hover, .tree li a.special-node.active {
-            background: #fef3c7; transform: translateY(-4px); box-shadow: 0 12px 20px -3px rgb(245 158 11 / 0.2);
-        }
+        .tree li a.special-node:hover, .tree li a.special-node.active { background: #fef3c7; transform: translateY(-4px); box-shadow: 0 12px 20px -3px rgb(245 158 11 / 0.2); }
         .tree li a.special-node .icon { color: #d97706; }
 
         .tree li a.system-node { background: #f5f3ff; border-color: #ddd6fe; color: #4c1d95; }
         .tree li a.system-node::before { background: #8b5cf6; height: 5px; }
-        .tree li a.system-node:hover, .tree li a.system-node.active {
-            background: #ede9fe; transform: translateY(-4px); box-shadow: 0 12px 20px -3px rgb(139 92 246 / 0.2);
-        }
+        .tree li a.system-node:hover, .tree li a.system-node.active { background: #ede9fe; transform: translateY(-4px); box-shadow: 0 12px 20px -3px rgb(139 92 246 / 0.2); }
         .tree li a.system-node .icon { color: #7c3aed; }
 
-        /* =========================================
-           SCROLLBARS E MODAL
-           ========================================= */
         .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
         .modal-enter { opacity: 1 !important; visibility: visible !important; }
         .modal-content-enter { transform: scale(1) translateY(0) !important; opacity: 1 !important; }
-
-        /* TABS da Tabela Rápida */
         .tab-btn.active-tab { border-bottom: 3px solid #4f46e5; color: #4f46e5; font-weight: 700; background-color: #e0e7ff; }
         .tab-content { display: none; }
         .tab-content.active-content { display: block; }
     </style>
 </head>
 <body class="bg-slate-100 h-screen overflow-hidden flex flex-col font-sans">
-
-    <!-- Header Responsivo -->
     <header class="bg-white shadow-sm border-b border-slate-200 py-3 px-4 md:px-8 flex justify-between items-center shrink-0 z-10">
         <div>
-            <h1 class="text-xl md:text-2xl font-bold text-slate-800"><i class="fa-solid fa-map-location-dot text-blue-600 mr-2"></i> EDO Flowchart Absoluto</h1>
-            <p class="text-xs md:text-sm text-slate-500">Mapeamento Avançado Teórico e Prático</p>
+            <h1 class="text-xl md:text-2xl font-bold text-slate-800"><i class="fa-solid fa-map-location-dot text-blue-600 mr-2"></i>Mapa Mental de EDOs</h1>
+            <p class="text-xs md:text-sm text-slate-500">Fluxograma interativo com métodos de 1ª ordem, 2ª ordem, sistemas e Laplace</p>
         </div>
         <div class="flex items-center gap-3">
             <button onclick="showCheatSheet()" class="text-sm bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-full border border-indigo-200 font-bold shadow-sm transition-colors">
-                <i class="fa-solid fa-book-bookmark mr-2"></i> Tabelas Rápidas
+                <i class="fa-solid fa-book-bookmark mr-2"></i>Tabelas Rápidas
             </button>
         </div>
     </header>
 
-    <!-- Main Content Area -->
     <main class="flex-1 overflow-auto custom-scrollbar p-6 md:p-12 cursor-grab active:cursor-grabbing" id="flowchart-container">
         <div class="tree inline-block min-w-max pb-32 px-10">
             <ul>
                 <li>
-                    <a href="#" onclick="showModal('start', this)">
+                    <a href="#" onclick="showModal(event, 'start', this)">
                         <i class="fa-solid fa-sitemap icon"></i>
                         Classificação Principal
                         <span class="text-[10px] font-normal mt-1 text-slate-500">Avalie as propriedades da EDO</span>
                     </a>
                     <ul>
-                        
-                        <!-- RAMO LAPLACE -->
                         <li>
-                            <a href="#" class="special-node" onclick="showModal('laplace', this)">
+                            <a href="#" class="special-node" onclick="showModal(event, 'laplace', this)">
                                 <i class="fa-solid fa-bolt icon"></i>
                                 Condições Iniciais Dadas?
-                                <span class="text-[10px] font-normal mt-1 opacity-80">Transformada de Laplace $\mathcal{L}$</span>
+                                <span class="text-[10px] font-normal mt-1 opacity-80">Transformada de Laplace</span>
                             </a>
                         </li>
 
-                        <!-- RAMO SISTEMAS -->
                         <li>
-                            <a href="#" class="system-node" onclick="showModal('sistemas_question', this)">
+                            <a href="#" class="system-node" onclick="showModal(event, 'sistemas_question', this)">
                                 <i class="fa-solid fa-layer-group icon"></i>
                                 Múltiplas Variáveis?
-                                <span class="text-[10px] font-normal mt-1 opacity-80">Ex: $x(t)$ e $y(t)$</span>
+                                <span class="text-[10px] font-normal mt-1 opacity-80">Ex.: $x(t)$ e $y(t)$</span>
                             </a>
                             <ul>
                                 <li>
-                                    <a href="#" class="system-node method-node" onclick="showModal('sistemas', this)">
+                                    <a href="#" class="system-node method-node" onclick="showModal(event, 'sistemas', this)">
                                         <i class="fa-solid fa-table-cells icon"></i>
                                         Sistemas Matriciais
-                                        <span class="text-[10px] font-normal mt-1 opacity-80">Autovalores/Autovetores</span>
+                                        <span class="text-[10px] font-normal mt-1 opacity-80">Autovalores e autovetores</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <!-- RAMO 1ª ORDEM -->
                         <li>
-                            <a href="#" onclick="showModal('ordem1', this)">
+                            <a href="#" onclick="showModal(event, 'ordem1', this)">
                                 <i class="fa-solid fa-1 icon"></i>
                                 1ª Ordem
                             </a>
                             <ul>
                                 <li>
-                                    <a href="#" onclick="showModal('linear_question', this)">
+                                    <a href="#" onclick="showModal(event, 'linear_question', this)">
                                         <i class="fa-solid fa-ruler-combined icon"></i>
                                         É Linear?
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#" class="method-node" onclick="showModal('fator_integrante', this)">
+                                            <a href="#" class="method-node" onclick="showModal(event, 'fator_integrante', this)">
                                                 <i class="fa-solid fa-check icon"></i>
                                                 SIM (Fator Int.)
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#" onclick="showModal('nao_linear_question', this)">
+                                            <a href="#" onclick="showModal(event, 'nao_linear_question', this)">
                                                 <i class="fa-solid fa-code-branch icon text-rose-500"></i>
                                                 NÃO Linear
                                             </a>
                                             <ul>
                                                 <li>
-                                                    <a href="#" class="method-node" onclick="showModal('separavel', this)">
+                                                    <a href="#" class="method-node" onclick="showModal(event, 'separavel', this)">
                                                         <i class="fa-solid fa-arrows-split-up-and-left icon"></i> Separável
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" onclick="showModal('exata_question', this)">
+                                                    <a href="#" onclick="showModal(event, 'exata_question', this)">
                                                         <i class="fa-solid fa-scale-balanced icon"></i>
                                                         Forma $Mdx+Ndy=0$
                                                     </a>
                                                     <ul>
                                                         <li>
-                                                            <a href="#" class="method-node" onclick="showModal('exata', this)">
+                                                            <a href="#" class="method-node" onclick="showModal(event, 'exata', this)">
                                                                 <i class="fa-solid fa-check icon"></i> É Exata
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="method-node" onclick="showModal('exata_fator', this)">
+                                                            <a href="#" class="method-node" onclick="showModal(event, 'exata_fator', this)">
                                                                 <i class="fa-solid fa-wand-magic-sparkles icon"></i> Forçar Exatidão
                                                             </a>
                                                         </li>
                                                     </ul>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="method-node" onclick="showModal('bernoulli', this)">
+                                                    <a href="#" class="method-node" onclick="showModal(event, 'bernoulli', this)">
                                                         <i class="fa-solid fa-superscript icon"></i> Bernoulli
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="method-node" onclick="showModal('homogenea1', this)">
+                                                    <a href="#" class="method-node" onclick="showModal(event, 'homogenea1', this)">
                                                         <i class="fa-solid fa-divide icon"></i> Homog. ($y/x$)
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="method-node" onclick="showModal('riccati', this)">
+                                                    <a href="#" class="method-node" onclick="showModal(event, 'riccati', this)">
                                                         <i class="fa-solid fa-square-root-variable icon"></i> Riccati
                                                     </a>
                                                 </li>
@@ -274,45 +188,44 @@
                                 </li>
                             </ul>
                         </li>
-                        
-                        <!-- RAMO 2ª ORDEM -->
+
                         <li>
-                            <a href="#" onclick="showModal('ordem2', this)">
+                            <a href="#" onclick="showModal(event, 'ordem2', this)">
                                 <i class="fa-solid fa-2 icon"></i>
                                 2ª Ordem
                             </a>
                             <ul>
                                 <li>
-                                    <a href="#" onclick="showModal('coef_constantes', this)">
+                                    <a href="#" onclick="showModal(event, 'coef_constantes', this)">
                                         <i class="fa-solid fa-c icon"></i>
                                         Coeficientes Constantes?
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#" onclick="showModal('homogenea_question', this)">
+                                            <a href="#" onclick="showModal(event, 'homogenea_question', this)">
                                                 <i class="fa-solid fa-check icon"></i>
                                                 SIM
                                             </a>
                                             <ul>
                                                 <li>
-                                                    <a href="#" class="method-node" onclick="showModal('homogenea', this)">
+                                                    <a href="#" class="method-node" onclick="showModal(event, 'homogenea', this)">
                                                         <i class="fa-solid fa-equals icon"></i>
                                                         Homogênea ($=0$)
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" onclick="showModal('nao_homogenea', this)">
+                                                    <a href="#" onclick="showModal(event, 'nao_homogenea', this)">
                                                         <i class="fa-solid fa-not-equal icon"></i>
-                                                        Não Homog. ($\neq0$)
+                                                        Não Homog. ($\neq 0$)
                                                     </a>
                                                     <ul>
                                                         <li>
-                                                            <a href="#" class="method-node" onclick="showModal('coef_indeterminados', this)">
+                                                            <a href="#" class="method-node" onclick="showModal(event, 'coef_indeterminados', this)">
                                                                 <i class="fa-solid fa-lightbulb icon"></i> Coef. Indeterminados
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="method-node" onclick="showModal('var_parametros', this)">
+                                                            <a href="#" class="method-node" onclick="showModal(event, 'var_parametros', this)">
                                                                 <i class="fa-solid fa-sliders icon"></i> Var. Parâmetros
                                                             </a>
                                                         </li>
@@ -321,18 +234,18 @@
                                             </ul>
                                         </li>
                                         <li>
-                                            <a href="#" onclick="showModal('coef_variaveis', this)">
+                                            <a href="#" onclick="showModal(event, 'coef_variaveis', this)">
                                                 <i class="fa-solid fa-xmark icon text-rose-500"></i>
                                                 NÃO (Variáveis)
                                             </a>
                                             <ul>
                                                 <li>
-                                                    <a href="#" class="method-node" onclick="showModal('cauchy_euler', this)">
+                                                    <a href="#" class="method-node" onclick="showModal(event, 'cauchy_euler', this)">
                                                         <i class="fa-solid fa-subscript icon"></i> Cauchy-Euler
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="method-node" onclick="showModal('series', this)">
+                                                    <a href="#" class="method-node" onclick="showModal(event, 'series', this)">
                                                         <i class="fa-solid fa-infinity icon"></i> Sol. em Séries
                                                     </a>
                                                 </li>
@@ -341,33 +254,28 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="#" class="method-node" onclick="showModal('reducao_ordem', this)">
+                                    <a href="#" class="method-node" onclick="showModal(event, 'reducao_ordem', this)">
                                         <i class="fa-solid fa-arrow-down-short-wide icon"></i>
                                         Falta $y$ ou $y'$?
                                     </a>
                                 </li>
                             </ul>
                         </li>
-
                     </ul>
                 </li>
             </ul>
         </div>
     </main>
 
-    <!-- =========================================
-         MODAL PRINCIPAL DE MÉTODOS
-         ========================================= -->
     <div id="method-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 opacity-0 invisible transition-all duration-300">
         <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
         <div id="modal-content-box" class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col transform scale-95 translate-y-4 opacity-0 transition-all duration-300 ease-out">
-            
             <div class="px-6 py-5 border-b border-slate-100 bg-slate-50 rounded-t-2xl flex justify-between items-start shrink-0">
                 <div class="pr-8">
                     <div class="flex items-center gap-2 mb-2">
                         <span id="modal-badge" class="px-2.5 py-1 rounded text-[11px] font-bold tracking-wider uppercase bg-blue-100 text-blue-700">Tag</span>
                     </div>
-                    <h2 id="modal-title" class="text-3xl font-bold text-slate-800 tracking-tight">Título do Método</h2>
+                    <h2 id="modal-title" class="text-3xl font-bold text-slate-800 tracking-tight">Título</h2>
                 </div>
                 <button onclick="closeModal()" class="absolute top-5 right-5 w-10 h-10 flex items-center justify-center bg-slate-200 text-slate-600 rounded-full hover:bg-rose-100 hover:text-rose-600 transition-colors z-10">
                     <i class="fa-solid fa-xmark text-xl"></i>
@@ -375,7 +283,6 @@
             </div>
 
             <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar">
-                
                 <div class="bg-blue-50/70 p-6 rounded-xl border border-blue-100 flex flex-col items-center justify-center text-center shadow-sm">
                     <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-3">Forma Padrão Exigida</span>
                     <span id="modal-condition" class="text-2xl md:text-3xl font-serif text-slate-800">Condição</span>
@@ -383,106 +290,79 @@
 
                 <div id="concept-container" class="bg-slate-50 rounded-xl p-6 border border-slate-200 shadow-sm">
                     <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center">
-                        <i class="fa-solid fa-book-open mr-2 text-slate-400"></i> Fundamentação Teórica
+                        <i class="fa-solid fa-book-open mr-2 text-slate-400"></i>Fundamentação Teórica
                     </h3>
                     <p id="modal-concept" class="text-base text-slate-700 leading-relaxed text-justify"></p>
                 </div>
 
                 <div>
                     <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-5 flex items-center">
-                        <i class="fa-solid fa-list-ol mr-2"></i> Algoritmo de Resolução (Passo a Passo)
+                        <i class="fa-solid fa-list-ol mr-2"></i>Algoritmo de Resolução
                     </h3>
                     <div id="modal-steps" class="space-y-4 text-base text-slate-700 leading-relaxed"></div>
                 </div>
 
                 <div id="tips-container" class="bg-amber-50 rounded-xl p-6 border border-amber-200 shadow-sm">
                     <h3 class="text-sm font-bold text-amber-700 uppercase tracking-widest mb-4 flex items-center">
-                        <i class="fa-solid fa-lightbulb mr-2 text-amber-500"></i> Dicas Cruciais e Armadilhas
+                        <i class="fa-solid fa-lightbulb mr-2 text-amber-500"></i>Dicas Cruciais
                     </h3>
                     <ul id="modal-tips" class="list-none space-y-3 text-[15px] text-amber-900 leading-relaxed"></ul>
                 </div>
 
                 <div>
                     <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-5 flex items-center">
-                        <i class="fa-solid fa-bolt mr-2 text-blue-500"></i> Exemplo Prático Detalhado
+                        <i class="fa-solid fa-bolt mr-2 text-blue-500"></i>Exemplo Prático
                     </h3>
                     <div class="bg-[#0f172a] rounded-xl p-6 shadow-inner overflow-x-auto custom-scrollbar">
                         <div id="modal-example" class="text-slate-100 font-mono text-[15px] leading-loose min-w-max"></div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- =========================================
-         MODAL DE CHEAT SHEET (TABELAS DE CONSULTA)
-         ========================================= -->
     <div id="cheat-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 opacity-0 invisible transition-all duration-300">
         <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm transition-opacity" onclick="closeCheatSheet()"></div>
         <div id="cheat-content-box" class="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col transform scale-95 translate-y-4 opacity-0 transition-all duration-300 ease-out">
-            
             <div class="px-6 py-5 border-b border-indigo-100 bg-indigo-50 rounded-t-2xl flex justify-between items-center shrink-0">
-                <h2 class="text-xl font-bold text-indigo-900"><i class="fa-solid fa-book-bookmark mr-2"></i> Fórmulas de Consulta Rápida</h2>
+                <h2 class="text-xl font-bold text-indigo-900"><i class="fa-solid fa-book-bookmark mr-2"></i>Fórmulas de Consulta Rápida</h2>
                 <button onclick="closeCheatSheet()" class="w-8 h-8 flex items-center justify-center bg-indigo-200 text-indigo-700 rounded-full hover:bg-rose-200 hover:text-rose-700 transition-colors">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- Abas de Navegação -->
             <div class="flex border-b border-slate-200 bg-slate-50 shrink-0">
                 <button onclick="switchTab('tab-integrais')" id="btn-tab-integrais" class="tab-btn active-tab flex-1 py-3 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors focus:outline-none">
-                    <i class="fa-solid fa-integral mr-1"></i> Integrais Clássicas
+                    <i class="fa-solid fa-integral mr-1"></i>Integrais
                 </button>
                 <button onclick="switchTab('tab-laplace')" id="btn-tab-laplace" class="tab-btn flex-1 py-3 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors focus:outline-none border-l border-slate-200">
-                    <i class="fa-solid fa-bolt mr-1"></i> Tabela de Laplace
+                    <i class="fa-solid fa-bolt mr-1"></i>Laplace
                 </button>
                 <button onclick="switchTab('tab-trig')" id="btn-tab-trig" class="tab-btn flex-1 py-3 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors focus:outline-none border-l border-slate-200">
-                    <i class="fa-solid fa-angle-right mr-1"></i> Trigonometria
+                    <i class="fa-solid fa-angle-right mr-1"></i>Trigonometria
                 </button>
             </div>
 
             <div class="flex-1 overflow-y-auto p-6 custom-scrollbar bg-white">
-                
-                <!-- ABA: Integrais -->
                 <div id="tab-integrais" class="tab-content active-content space-y-4">
-                    <p class="text-sm text-slate-500 mb-4 border-l-4 border-indigo-400 pl-3">Fórmulas essenciais requeridas frequentemente em Fatores Integrantes e EDOs Separáveis. A constante $C$ foi omitida por clareza.</p>
+                    <p class="text-sm text-slate-500 mb-4 border-l-4 border-indigo-400 pl-3">Fórmulas úteis em EDOs separáveis, fatores integrantes e variação de parâmetros.</p>
                     <div class="grid grid-cols-1 gap-3">
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">
-                            $$\int x^n dx = \frac{x^{n+1}}{n+1} \quad (n \neq -1)$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">
-                            $$\int \frac{1}{x} dx = \ln|x|$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">
-                            $$\int e^{ax} dx = \frac{1}{a}e^{ax}$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">
-                            $$\int \ln(x) dx = x\ln(x) - x$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">
-                            $$\int \sin(ax) dx = -\frac{1}{a}\cos(ax)$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">
-                            $$\int \cos(ax) dx = \frac{1}{a}\sin(ax)$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">
-                            $$\int \tan(x) dx = -\ln|\cos(x)| = \ln|\sec(x)|$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">
-                            $$\int \frac{dx}{x^2+a^2} = \frac{1}{a} \arctan\left(\frac{x}{a}\right)$$
-                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">$$\int x^n\,dx = \frac{x^{n+1}}{n+1},\; n\neq -1$$</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">$$\int \frac{1}{x}\,dx = \ln|x|$$</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">$$\int e^{ax}\,dx = \frac{1}{a}e^{ax}$$</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">$$\int \sin(ax)\,dx = -\frac{1}{a}\cos(ax)$$</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">$$\int \cos(ax)\,dx = \frac{1}{a}\sin(ax)$$</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex justify-center text-lg">$$\int \frac{dx}{x^2+a^2} = \frac{1}{a}\arctan\!\left(\frac{x}{a}\right)$$</div>
                     </div>
                 </div>
 
-                <!-- ABA: Laplace -->
                 <div id="tab-laplace" class="tab-content space-y-4">
-                    <p class="text-sm text-slate-500 mb-4 border-l-4 border-amber-400 pl-3">Transformadas diretas do domínio do tempo $f(t)$ para o domínio da frequência $F(s)$.</p>
+                    <p class="text-sm text-slate-500 mb-4 border-l-4 border-amber-400 pl-3">Transformadas diretas mais usadas.</p>
                     <table class="min-w-full border-collapse border border-slate-300 rounded-lg overflow-hidden">
                         <thead class="bg-slate-100">
                             <tr>
-                                <th class="border border-slate-300 p-3 text-center text-sm font-bold text-slate-700">Função $f(t)$</th>
-                                <th class="border border-slate-300 p-3 text-center text-sm font-bold text-slate-700">Transformada $F(s) = \mathcal{L}\{f(t)\}$</th>
+                                <th class="border border-slate-300 p-3 text-center text-sm font-bold text-slate-700">$f(t)$</th>
+                                <th class="border border-slate-300 p-3 text-center text-sm font-bold text-slate-700">$\mathcal{L}\{f(t)\}$</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">
@@ -491,227 +371,494 @@
                             <tr><td class="border border-slate-200 p-3 text-center">$$e^{at}$$</td><td class="border border-slate-200 p-3 text-center">$$\frac{1}{s-a}$$</td></tr>
                             <tr><td class="border border-slate-200 p-3 text-center">$$\sin(kt)$$</td><td class="border border-slate-200 p-3 text-center">$$\frac{k}{s^2+k^2}$$</td></tr>
                             <tr><td class="border border-slate-200 p-3 text-center">$$\cos(kt)$$</td><td class="border border-slate-200 p-3 text-center">$$\frac{s}{s^2+k^2}$$</td></tr>
-                            <tr><td class="border border-slate-200 p-3 text-center">$$e^{at}\sin(kt)$$</td><td class="border border-slate-200 p-3 text-center">$$\frac{k}{(s-a)^2+k^2}$$</td></tr>
-                            <tr><td class="border border-slate-200 p-3 text-center">$$e^{at}\cos(kt)$$</td><td class="border border-slate-200 p-3 text-center">$$\frac{s-a}{(s-a)^2+k^2}$$</td></tr>
-                            <tr class="bg-slate-50"><td colspan="2" class="border border-slate-200 p-2 text-center text-xs font-bold text-slate-500">Propriedades Operacionais</td></tr>
-                            <tr><td class="border border-slate-200 p-3 text-center">$$y'(t)$$</td><td class="border border-slate-200 p-3 text-center">$$sY(s) - y(0)$$</td></tr>
-                            <tr><td class="border border-slate-200 p-3 text-center">$$y''(t)$$</td><td class="border border-slate-200 p-3 text-center">$$s^2Y(s) - sy(0) - y'(0)$$</td></tr>
-                            <tr><td class="border border-slate-200 p-3 text-center">$$u(t-a)$$ (Degrau)</td><td class="border border-slate-200 p-3 text-center">$$\frac{e^{-as}}{s}$$</td></tr>
-                            <tr><td class="border border-slate-200 p-3 text-center">$$\delta(t-a)$$ (Impulso)</td><td class="border border-slate-200 p-3 text-center">$$e^{-as}$$</td></tr>
+                            <tr><td class="border border-slate-200 p-3 text-center">$$y'(t)$$</td><td class="border border-slate-200 p-3 text-center">$$sY(s)-y(0)$$</td></tr>
+                            <tr><td class="border border-slate-200 p-3 text-center">$$y''(t)$$</td><td class="border border-slate-200 p-3 text-center">$$s^2Y(s)-sy(0)-y'(0)$$</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- ABA: Trigonometria -->
                 <div id="tab-trig" class="tab-content space-y-4">
-                    <p class="text-sm text-slate-500 mb-4 border-l-4 border-emerald-400 pl-3">Identidades trigonométricas essenciais para manipulação antes da integração, frequentemente usadas em Variação de Parâmetros e Equações de Riccati.</p>
+                    <p class="text-sm text-slate-500 mb-4 border-l-4 border-emerald-400 pl-3">Identidades úteis em integrais e simplificações algébricas.</p>
                     <div class="grid grid-cols-1 gap-3">
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col items-center">
-                            <span class="text-xs text-slate-400 mb-1">Identidade Fundamental</span>
-                            $$\sin^2(x) + \cos^2(x) = 1$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col items-center">
-                            <span class="text-xs text-slate-400 mb-1">Arco Duplo (Redução de Potência)</span>
-                            $$\sin^2(x) = \frac{1 - \cos(2x)}{2} \quad \text{e} \quad \cos^2(x) = \frac{1 + \cos(2x)}{2}$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col items-center">
-                            <span class="text-xs text-slate-400 mb-1">Relações Secundárias</span>
-                            $$1 + \tan^2(x) = \sec^2(x)$$
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col items-center">
-                            <span class="text-xs text-slate-400 mb-1">Definições Úteis</span>
-                            $$\sec(x) = \frac{1}{\cos(x)}, \quad \csc(x) = \frac{1}{\sin(x)}, \quad \cot(x) = \frac{\cos(x)}{\sin(x)}$$
-                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col items-center">$$\sin^2(x)+\cos^2(x)=1$$</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col items-center">$$\sin^2(x)=\frac{1-\cos(2x)}{2},\quad \cos^2(x)=\frac{1+\cos(2x)}{2}$$</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col items-center">$$1+\tan^2(x)=\sec^2(x)$$</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col items-center">$$\sec(x)=\frac{1}{\cos(x)},\quad \csc(x)=\frac{1}{\sin(x)}$$</div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- Lógica de Dados -->
     <script>
-        // BANCO DE DADOS ABSOLUTO: Conteúdo massivo, matemático e descritivo.
         const edoData = {
-            'start': {
-                title: "Classificação Universal de EDOs", 
-                badge: "DIAGNÓSTICO INICIAL", 
-                condition: "A Análise da Variável Dependente",
-                concept: "Uma Equação Diferencial é uma equação matemática que relaciona uma função desconhecida (geralmente $y$) com suas próprias derivadas. A primeira e mais crítica etapa antes de aplicar qualquer técnica de cálculo é o <strong>Diagnóstico</strong>. Classificar erroneamente uma EDO em uma prova de engenharia significa que o método de resolução escolhido será matematicamente incompatível, levando ao colapso imediato da solução.",
+            start: {
+                title: "Classificação Principal",
+                badge: "diagnóstico inicial",
+                condition: "Identifique ordem, linearidade, coeficientes e condições iniciais",
+                concept: "Antes de resolver, classifique a equação. Isso determina o método correto. Em especial, verifique: ordem da maior derivada, se a equação é linear ou não, se os coeficientes são constantes, se há mais de uma variável dependente e se as condições iniciais estão dadas.",
                 steps: [
-                    "<strong>1. Identifique a Variável Independente e Dependente:</strong> Em física e engenharia, é comum usar $x(t)$ onde $x$ é a posição (dependente) e $t$ é o tempo (independente). Na matemática pura, o padrão é $y(x)$.",
-                    "<strong>2. Determine a Ordem Absoluta:</strong> Vasculhe a equação inteira procurando o operador de derivação supremo. Se a maior derivada presente for a primeira ($y'$ ou $\\frac{dy}{dx}$), a EDO é de 1ª Ordem. Se houver uma aceleração ou concavidade ($y''$ ou $\\frac{d^2y}{dx^2}$), é de 2ª Ordem.",
-                    "<strong>3. Verifique a Presença de Sistemas Acoplados:</strong> Se o problema fornecer duas ou mais EDOs simultâneas envolvendo múltiplas variáveis dependentes interagindo (ex: um predador $y(t)$ e uma presa $x(t)$), você está lidando com Sistemas de EDOs.",
-                    "<strong>4. Análise de Valores de Contorno/Iniciais:</strong> O problema forneceu restrições geométricas ou físicas como $y(0) = 5$ ou $y'(0) = 0$? Se sim, você deve encontrar primeiro a Solução Geral (com constantes $C$) e, em seguida, plugar esses valores para encontrar a Solução Particular (ou ir direto para Laplace)."
+                    "<strong>1.</strong> Ache a maior derivada presente: isso define a ordem.",
+                    "<strong>2.</strong> Veja se a incógnita e suas derivadas aparecem linearmente. Se sim, a EDO é linear.",
+                    "<strong>3.</strong> Procure formatos especiais: separável, exata, Bernoulli, homogênea de 1ª ordem, Cauchy-Euler etc.",
+                    "<strong>4.</strong> Se houver condições iniciais e coeficientes constantes, considere Laplace como atalho.",
+                    "<strong>5.</strong> Se houver várias funções acopladas, trate como sistema de EDOs."
                 ],
                 tips: [
-                    "<i class='fa-solid fa-triangle-exclamation text-rose-500'></i> <strong>A Pegadinha do Grau vs. Ordem:</strong> Não confunda o grau algébrico com a ordem diferencial. Na equação $(y')^4 + y = x$, a ordem é 1 (porque a maior derivada é a primeira), apesar de estar elevada à 4ª potência.",
-                    "Se você se deparar com derivadas parciais como $\\frac{\\partial u}{\\partial x} + \\frac{\\partial u}{\\partial t} = 0$, isto é uma EDP (Equação Diferencial Parcial) e requer métodos inteiramente diferentes (como Separação de Variáveis de Fourier)."
+                    "<i class='fa-solid fa-triangle-exclamation text-rose-500'></i> Não confunda <strong>ordem</strong> com <strong>potência</strong> da derivada. Em $(y')^4+y=x$, a ordem continua sendo 1.",
+                    "Se aparecer derivada parcial, você já saiu do mundo das EDOs e entrou em EDPs."
                 ],
-                example: "<strong>1ª Ordem (Velocidade / Decaimento Termodinâmico):</strong>\n$$y' + 3xy = \\sin(x)$$\n\n<strong>2ª Ordem (Aceleração / Sistemas Massa-Mola / Circuitos RLC):</strong>\n$$y'' + 4y' + 4y = e^x$$\n\n<strong>Sistema de EDOs (Tanques Interligados / Pêndulo Duplo):</strong>\n$$\\begin{cases} x' = 2x - y \\\\ y' = x + 2y \\end{cases}$$"
+                example: "Exemplos rápidos:\n$$y'+3xy=\sin x$$\n$$y''+4y'+4y=e^x$$\n$$\begin{cases}x'=2x-y\\y'=x+2y\end{cases}$$"
             },
-            
-            'laplace': {
-                title: "A Transformada de Laplace", 
-                badge: "MÉTODO ABSOLUTO / ATALHO", 
-                condition: "A EDO possui Coeficientes Constantes e Condições Iniciais são estritamente dadas no instante inicial (ex: $y(0)$ e $y'(0)$).",
-                concept: "Idealizada por Pierre-Simon Laplace, a Transformada $\\mathcal{L}$ é um operador integral infinito definido como $F(s) = \\int_{0}^{\\infty} f(t)e^{-st} dt$. O brilho deste método reside em sua capacidade de transmutar equações diferenciais extremamente complexas do domínio do tempo (onde trabalhamos com derivadas dolorosas) para o domínio da frequência complexa $s$ (onde as derivadas se tornam meras multiplicações algébricas polinomiais). É a ferramenta suprema da Teoria de Controle Clássico.",
+            laplace: {
+                title: "Transformada de Laplace",
+                badge: "atalho poderoso",
+                condition: "EDO linear com coeficientes constantes e condições iniciais conhecidas",
+                concept: "A transformada de Laplace converte derivadas em expressões algébricas no domínio $s$. Por isso ela é excelente para problemas com condições iniciais, degraus, impulsos e forçamentos por funções conhecidas.",
                 steps: [
-                    "<strong>1. A Transformada Direta Global:</strong> Aplique o operador de Laplace $\\mathcal{L}\\{\\cdot\\}$ de forma distributiva a absolutamente todos os termos isolados de ambos os lados da EDO.",
-                    "<strong>2. Aniquilação das Derivadas:</strong> Substitua os operadores diferenciais usando o Teorema da Derivada de Laplace. Isso injeta as condições iniciais diretamente no coração do problema:\n- $\\mathcal{L}\\{y'\\} = sY(s) - y(0)$\n- $\\mathcal{L}\\{y''\\} = s^2Y(s) - sy(0) - y'(0)$",
-                    "<strong>3. Alocação Numérica Imediata:</strong> Substitua os valores numéricos das condições iniciais (ex: $y(0)=2$, $y'(0)=-1$) que o problema forneceu.",
-                    "<strong>4. O Isolamento Algébrico de Y(s):</strong> Agrupe todos os termos que contêm $Y(s)$ no lado esquerdo da igualdade e fatore-os. Transfira todo o resto para o lado direito. A equação agora será resolvida puramente por álgebra de divisão polinomial.",
-                    "<strong>5. Expansão em Frações Parciais (O Desafio Algébrico):</strong> Como o lado direito quase sempre resultará em uma divisão de polinômios complexa (ex: $\\frac{s+2}{(s-1)(s^2+4)}$), você é OBRIGADO a decompor essa fração colossal em frações elementares menores usando raízes.",
-                    "<strong>6. A Transformada Inversa $\\mathcal{L}^{-1}$:</strong> Com as frações elementares em mãos, consulte a Tabela de Laplace (disponível na aba Tabelas Rápidas no topo desta tela) para reverter cada bloco do domínio $s$ de volta para as funções temporais originais $y(t)$."
+                    "<strong>1.</strong> Aplique $\mathcal{L}$ em ambos os lados da EDO.",
+                    "<strong>2.</strong> Troque as derivadas por $\mathcal{L}\{y'\}=sY(s)-y(0)$ e $\mathcal{L}\{y''\}=s^2Y(s)-sy(0)-y'(0)$.",
+                    "<strong>3.</strong> Substitua as condições iniciais.",
+                    "<strong>4.</strong> Isole $Y(s)$ algebricamente.",
+                    "<strong>5.</strong> Faça frações parciais, quando necessário.",
+                    "<strong>6.</strong> Aplique a transformada inversa para obter $y(t)$."
                 ],
                 tips: [
-                    "<strong>Vantagem Estratégica:</strong> Laplace é o único método que não te obriga a calcular $y_h$ e $y_p$ separadamente. Ele entrega a resposta particular final completa em um único golpe algébrico.",
-                    "<strong>O Cuidado com Funções Descontínuas:</strong> Na engenharia elétrica, é muito comum ter a função $f(t)$ do lado direito como um Degrau de Heaviside $u(t-a)$ (uma chave ligando/desligando o circuito) ou um Impulso de Dirac $\\delta(t)$ (um raio ou pico de voltagem infinitesimal). Laplace lida com elas perfeitamente, introduzindo termos exponenciais defasados no domínio s ($e^{-as}$)."
+                    "Muito útil quando o lado direito é degrau de Heaviside, impulso de Dirac ou função por partes.",
+                    "Em muitos exercícios ela evita calcular separadamente $y_h$ e $y_p$."
                 ],
-                example: "<strong>Problema Clássico de Vibração Mecânica Forçada:</strong>\n$$y'' + y = \\sin(t), \\quad \\text{sujeito a } y(0)=0, \\; y'(0)=1$$\n\n<strong>Passo 1 & 2:</strong> Aplicando Laplace em cada termo respeitando a linearidade:\n$$[s^2Y(s) - sy(0) - y'(0)] + Y(s) = \\mathcal{L}\\{\\sin(t)\\}$$\nSabendo pela tabela que $\\mathcal{L}\\{\\sin(t)\\} = \\frac{1}{s^2+1}$:\n$$s^2Y(s) - sy(0) - y'(0) + Y(s) = \\frac{1}{s^2+1}$$\n\n<strong>Passo 3:</strong> Substituindo agressivamente as condições de contorno fornecidas ($y=0$ e $y'=1$):\n$$s^2Y(s) - 0 - 1 + Y(s) = \\frac{1}{s^2+1}$$\n\n<strong>Passo 4:</strong> Agrupando $Y(s)$ e isolando:\n$$(s^2+1)Y(s) = 1 + \\frac{1}{s^2+1}$$\n$$Y(s) = \\frac{1}{s^2+1} + \\frac{1}{(s^2+1)^2}$$\n\n<strong>Passo 6 (Inversão Avançada):</strong> O primeiro termo $\\frac{1}{s^2+1}$ retorna diretamente para $\\sin(t)$. O segundo termo requer Teorema da Convolução ou Tabela Estendida, resultando em $\\frac{1}{2}(\\sin t - t\\cos t)$.\n\n<strong>Resposta da Posição da Massa no Tempo:</strong>\n$$y(t) = \\sin(t) + \\frac{1}{2}(\\sin(t) - t\\cos(t))$$"
+                example: "$$y''+y=\sin t,\qquad y(0)=0,\; y'(0)=1$$\nAplicando Laplace:\n$$(s^2Y-1)+Y=\frac{1}{s^2+1}$$\n$$(s^2+1)Y=1+\frac{1}{s^2+1}$$\n$$Y=\frac{1}{s^2+1}+\frac{1}{(s^2+1)^2}$$"
             },
-
-            'sistemas': {
-                title: "Sistemas Lineares Acoplados de EDOs", 
-                badge: "MÉTODO MATRICIAL", 
-                condition: "$\\vec{X}' = A\\vec{X}$ (Onde as variáveis dependentes se cruzam, como $x' = 2x+y$ e $y' = x-y$)",
-                concept: "Na realidade, os sistemas físicos nunca operam de forma isolada. Um tanque de substância química vaza para outro tanque. Duas molas conectadas puxam uma à outra. O comportamento de uma variável $x(t)$ dita a taxa de variação da variável $y(t)$, e vice-versa. Quando isso ocorre e o sistema possui coeficientes constantes e é de primeira ordem, a Álgebra Linear fornece a solução exata através da Decomposição Espectral (Autovalores e Autovetores da matriz do sistema).",
+            sistemas_question: {
+                title: "Há múltiplas variáveis dependentes?",
+                badge: "triagem de sistemas",
+                condition: "Ex.: $x'(t)$ depende de $x$ e $y$, e $y'(t)$ depende de $x$ e $y$",
+                concept: "Se o problema tem duas ou mais funções desconhecidas interagindo entre si, ele deve ser tratado como sistema. O passo natural é organizar tudo em forma vetorial ou matricial.",
                 steps: [
-                    "<strong>1. Modelagem Matricial:</strong> Converta o sistema de equações puras para o formato matricial canônico $\\vec{X}' = A\\vec{X}$, onde $A$ é a matriz quadrada contendo estritamente as constantes que multiplicam as variáveis originais.",
-                    "<strong>2. Equação Característica da Matriz:</strong> O sistema de oscilação baseia-se na estabilidade dos Autovalores (Eigenvalues) denotados por $\\lambda$. Para encontrá-los, você deve calcular o determinante nulo da subtração da matriz identidade ponderada:\n$$\\det(A - \\lambda I) = 0$$",
-                    "<strong>3. Resolução Polinomial:</strong> O cálculo do determinante resultará em um polinômio de grau $n$ em função de $\\lambda$. Resolva este polinômio para extrair todos os Autovalores do sistema ($\\lambda_1, \\lambda_2, ...$).",
-                    "<strong>4. Vetores Direcionais (Autovetores):</strong> Para cada autovalor individual extraído, você deve encontrar seu vetor direcional base (Eigenvector) denotado por $\\vec{v}$, resolvendo o sistema linear homogêneo matricial:\n$$(A - \\lambda I)\\vec{v} = \\vec{0}$$",
-                    "<strong>5. Montagem da Solução Geral Vetorial:</strong> Com os pares de autovalor/autovetor em mãos, a resposta do sistema é a combinação linear da base exponencial.\nSe as raízes forem reais e diferentes: $$\\vec{X}(t) = C_1 e^{\\lambda_1 t} \\vec{v_1} + C_2 e^{\\lambda_2 t} \\vec{v_2}$$"
+                    "<strong>1.</strong> Reúna as incógnitas num vetor $\mathbf{X}(t)$.",
+                    "<strong>2.</strong> Escreva o sistema como $\mathbf{X}'=A\mathbf{X}+\mathbf{F}(t)$.",
+                    "<strong>3.</strong> Se $\mathbf{F}(t)=0$, o sistema é homogêneo.",
+                    "<strong>4.</strong> Para coeficientes constantes, autovalores e autovetores costumam ser o caminho principal."
                 ],
                 tips: [
-                    "<strong>Dinâmica de Sistemas:</strong> O sinal dos autovalores $\\lambda$ dita o destino físico do sistema. Se ambos forem negativos, é um poço estável (as concentrações zeram com o tempo). Se houver um positivo e um negativo, é um ponto de sela (instável). Se resultarem em números complexos, significa que as variáveis orbitam em ciclos contínuos de oscilação (foco espiral).",
-                    "Se você se deparar com um sistema de EDOs não homogêneo (ex: $\\vec{X}' = A\\vec{X} + \\vec{F}(t)$), você terá que aplicar uma expansão da Variação de Parâmetros usando a Matriz Fundamental $\\Phi(t)$."
+                    "Às vezes uma EDO de 2ª ordem pode ser reescrita como sistema de 1ª ordem.",
+                    "Sistemas lineares homogêneos com matriz constante têm solução estruturada por exponenciais matriciais."
                 ],
-                example: "<strong>Sistema de Predador-Presa Linearizado:</strong>\n$$\\begin{cases} x' = 4x + y \\\\ y' = -2x + y \\end{cases}$$\n\n<strong>1. O Sistema na Forma Matricial Vetorial:</strong>\n$$\\begin{bmatrix} x' \\\\ y' \\end{bmatrix} = \\begin{bmatrix} 4 & 1 \\\\ -2 & 1 \\end{bmatrix} \\begin{bmatrix} x \\\\ y \\end{bmatrix}$$\n\n<strong>2. Descobrindo as Frequências (Autovalores):</strong>\n$$\\det \\left( \\begin{bmatrix} 4-\\lambda & 1 \\\\ -2 & 1-\\lambda \\end{bmatrix} \\right) = 0$$\n$$(4-\\lambda)(1-\\lambda) - (1)(-2) = 0 \\implies \\lambda^2 - 5\\lambda + 6 = 0$$\nFatorando, extraímos os autovalores: $\\lambda_1 = 3$ e $\\lambda_2 = 2$.\n\n<strong>3. Descobrindo os Direcionamentos (Autovetores):</strong>\nPara $\\lambda_1 = 3$:\n$$\\begin{bmatrix} 4-3 & 1 \\\\ -2 & 1-3 \\end{bmatrix} \\begin{bmatrix} v_x \\\\ v_y \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} \\implies \\begin{bmatrix} 1 & 1 \\\\ -2 & -2 \\end{bmatrix} \\begin{bmatrix} v_x \\\\ v_y \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}$$\nIsso gera a equação $v_x + v_y = 0$, então $v_y = -v_x$. Escolhendo $v_x = 1$, temos o vetor $\\vec{v_1} = \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix}$.\n\n(Aplicando o mesmo raciocínio para $\\lambda_2=2$, achamos $\\vec{v_2} = \\begin{bmatrix} 1 \\\\ -2 \\end{bmatrix}$).\n\n<strong>4. A Solução Dinâmica Final do Sistema:</strong>\n$$\\begin{bmatrix} x(t) \\\\ y(t) \\end{bmatrix} = C_1 e^{3t} \\begin{bmatrix} 1 \\\\ -1 \\end{bmatrix} + C_2 e^{2t} \\begin{bmatrix} 1 \\\\ -2 \\end{bmatrix}$$"
+                example: "$$\begin{cases}x'=4x+y\\y'=-2x+y\end{cases}$$"
             },
-
-            'fator_integrante': {
-                title: "Fator Integrante de Leibnitz (EDO Linear)", 
-                badge: "MÉTODO FUNDAMENTAL DE 1ª ORDEM", 
-                condition: "$$y' + P(x)y = Q(x)$$",
-                concept: "Este método foi idealizado independentemente por Leibniz e Bernoulli no século XVII. Ele utiliza um artifício matemático audacioso: ele força artificialmente o lado esquerdo da EDO a se transformar perfeitamente na resposta da 'Regra do Produto' para Derivadas, do cálculo diferencial ($(uv)' = u'v + uv'$). Multiplicando a equação desbalanceada inteira por uma função mágica restauradora exponencial $\\mu(x)$, conseguimos 'compactar' os múltiplos termos difusos de $y$ e $y'$ numa derivada exata de um único produto, viabilizando a integração imediata.",
+            sistemas: {
+                title: "Sistemas Matriciais",
+                badge: "método matricial",
+                condition: "$\mathbf{X}'=A\mathbf{X}$",
+                concept: "Quando o sistema é linear, homogêneo e com coeficientes constantes, a matriz $A$ controla toda a dinâmica. A solução nasce dos autovalores e autovetores de $A$.",
                 steps: [
-                    "<strong>1. A Padronização Rigorosa:</strong> Certifique-se de que a EDO está na forma canônica padrão absoluta. O coeficiente numérico e algébrico multiplicando a derivada livre $y'$ DEVE ser o número 1. Se houver qualquer termo (como um $x$ ou $x^2$) colado ao $y'$, você é obrigado a dividir a equação diferencial em sua totalidade por ele.",
-                    "<strong>2. O Isolamento Analítico:</strong> Identifique cirurgicamente $P(x)$, que é definido como a totalidade do termo multiplicador alocado junto à variável livre $y$.",
-                    "<strong>3. A Geração do Fator Mágico:</strong> Calcule a função multiplicadora transcendente $\\mu(x)$ através do uso de exponenciação integral em base de Euler:\n$$\\mu(x) = e^{\\int P(x) dx}$$",
-                    "<strong>4. O Colapso Dimensionado:</strong> Multiplique cada um dos termos da EDO original canônica pela função $\\mu(x)$ recém-gerada. O modelo matemático teórico garante inflexivelmente que todo o aglomerado complexo de blocos dispostos do lado esquerdo colapsará estruturalmente para a representação super-compacta:\n$$(\\mu(x) \\cdot y)' = \\mu(x) \\cdot Q(x)$$",
-                    "<strong>5. Integração e Alforria:</strong> Aplique a integral em ambos os lados em função do diferencial $dx$. Como o lado esquerdo já abriga uma derivada integralizada isolada, a barreira do cálculo aniquila a função derivada. Termine a conta dividindo o corpo isolado final de volta pelo próprio fator integrante:\n$$y = \\frac{1}{\\mu(x)} \\left[ \\int \\mu(x) Q(x) dx + C \\right]$$"
+                    "<strong>1.</strong> Escreva o sistema na forma $\mathbf{X}'=A\mathbf{X}$.",
+                    "<strong>2.</strong> Resolva $\det(A-\lambda I)=0$ para achar os autovalores.",
+                    "<strong>3.</strong> Para cada autovalor, resolva $(A-\lambda I)\mathbf{v}=0$ para achar o autovetor.",
+                    "<strong>4.</strong> Monte a solução geral com combinações de $e^{\lambda t}\mathbf{v}$.",
+                    "<strong>5.</strong> Use condições iniciais para achar as constantes."
                 ],
                 tips: [
-                    "<strong>O Pecado Capital do +C:</strong> Jamais, em hipótese alguma, posicione a constante arbitrária de integração $+C$ nos patamares ao calcular a expoente $\\int P(x) dx$. A constante orgânica só deverá vir à tona no fecho absoluto da etapa 5.",
-                    "Se porventura $P(x)$ carregar carga escalar de formatação subtrativa (ex: $y' - 4y$), mantenha-se em alerta máximo para absorver e portar o sinal flagrante para os confines da integral atuante pertinente ao fator integrativo: $e^{\\int -4 dx}$."
+                    "Autovalores negativos indicam decaimento; positivos indicam crescimento; complexos indicam oscilação/espiral.",
+                    "Se houver autovalor repetido, pode ser preciso um vetor generalizado."
                 ],
-                example: "Equação bruta não-canônica dada em avaliação: $x y' + 2y = 4x^2$\n\n<strong>Passo 1 (Padronização):</strong> Temos que aniquilar o $x$ que multiplica $y'$. Dividimos tudo por $x$.\n$$y' + \\frac{2}{x}y = 4x$$\n\n<strong>Passo 2 (Mapeamento):</strong> Agora temos claramente enquadrados $P(x)=\\frac{2}{x}$ e $Q(x)=4x$.\n\n<strong>Passo 3 (O Fator de Correção Mágico):</strong>\n$$\\mu = e^{\\int \\frac{2}{x} dx} = e^{2\\ln x}$$\nUsando as propriedades essenciais dos logaritmos, passamos o 2 como expoente do argumento ($e^{\\ln x^2}$) e sabemos que a exponencial e o logaritmo natural se autodestroem reciprocamente, resultando que: $\\mu(x) = x^2$.\n\n<strong>Passo 4 e 5 (Substituição Rápida na Matriz):</strong>\n$$y = \\frac{1}{x^2} \\left[ \\int (x^2)(4x) dx + C \\right]$$\n$$y = \\frac{1}{x^2} \\left[ \\int 4x^3 dx + C \\right]$$\n$$y = \\frac{1}{x^2} \\left[ x^4 + C \\right]$$\n\n<strong>Solução Geral Analítica:</strong>\n$$y = x^2 + \\frac{C}{x^2}$$"
+                example: "$$A=\begin{bmatrix}4&1\\-2&1\end{bmatrix}$$\n$$\det(A-\lambda I)=\lambda^2-5\lambda+6=0$$\nLogo, $\lambda_1=3$ e $\lambda_2=2$."
             },
-
-            'separavel': {
-                title: "Método de Variáveis Separáveis", 
-                badge: "MÉTODO DE 1ª ORDEM", 
-                condition: "$$f(y)dy = g(x)dx$$ (Todas as instâncias das variáveis podem ser fatoradas em agrupamentos puros exclusivos)",
-                concept: "Esta constitui a morfologia mais primitiva, intuitiva e direta de resolução exata concernente a uma equação diferencial. O substrato basilar reside exclusivamente na álgebra: caso sejamos capazes de isolar estruturalmente, e em integridade absoluta, as esferas compostas pelas variáveis $x$ e pelas variáveis $y$ orientando-as para os patamares opostos de um plano de igualdade sem ocorrência de contaminação cruzada de somas, atingimos a permissão final para invocar o núcleo do Teorema Fundamental do Cálculo em ambas as metades simultaneamente.",
+            ordem1: {
+                title: "EDOs de 1ª Ordem",
+                badge: "classificação",
+                condition: "A maior derivada presente é $y'$",
+                concept: "Em 1ª ordem, a pergunta mais importante é: a equação é linear? Se não for, ainda pode cair em várias classes clássicas: separável, exata, Bernoulli, homogênea ou Riccati.",
                 steps: [
-                    "<strong>1. Adequação da Notação de Leibniz:</strong> Reescreva o símbolo unificado da derivada $y'$ explicitamente em seu formato mecânico original na forma de fração paramétrica $\\frac{dy}{dx}$. Este passo facilita enormemente a compreensão holística para os estágios vindouros de trânsito e fatoração algébrica.",
-                    "<strong>2. Agrupamento em Prolapso Fatorativo:</strong> Utilize todas as manipulações de álgebra fundamental necessárias para alocar categoricamente tudo que portar $y$ (sem exceção, bem como o próprio diferencial acoplado $dy$) em reclusão sobre o lado esquerdo da proposição matemática.",
-                    "<strong>3. O Deslocamento Simétrico:</strong> Transfira com igual força todo bloco dependente inerente à matriz $x$ (incluindo fundamentalmente a porção diferencial $dx$) estritamente para o lado direito da arquitetura.",
-                    "<strong>4. Ancoragem de Integração Operacional:</strong> Acione simultaneamente o operador limitador central de integração $\\int$ de formatação independente flanqueando em ambos os lados cardeais da estrutura isolada:\n$$\\int f(y) dy = \\int g(x) dx + C$$",
-                    "<strong>5. Mapeamento da Solução Final Explícita:</strong> Uma vez exaurida a integração sistêmica, faça uso intensivo da retaguarda algébrica (por exemplo, deflagrando blocos da base natural neperiana $e$ em ambos os flancos a fim de aniquilar invólucros de logaritmos) com o único escopo de isolar e expor de vez a variável solitária $y$ em sua notação explícita $y(x) = \\dots$."
+                    "<strong>1.</strong> Tente escrever a equação como $y'=f(x,y)$.",
+                    "<strong>2.</strong> Verifique se ela pode ser escrita como $y'+P(x)y=Q(x)$.",
+                    "<strong>3.</strong> Se não for linear, teste separabilidade.",
+                    "<strong>4.</strong> Depois teste formato exato, Bernoulli, homogêneo ou Riccati."
                 ],
                 tips: [
-                    "Evite confusões cruciais: Adicione de imediato a constante estrutural de incerteza da equação, a famosa variação arbitrária $+C$, OBRIGATORIAMENTE assim que os blocos das integrais forem consumidos de ambos os lados, alocando-a padronizadamente ao lado da variável formatada de dominância independente ($x$).",
-                    "Este modelo descreve primorosamente as estruturas naturais do crescimento malthusiano populacional e da taxa contínua ininterrupta concernente a esquemas de decaimento radioativo molecular, além de comandar inteiramente os fenômenos térmicos atrelados à Lei Universal de Resfriamento de Newton."
+                    "Muitas questões parecem não lineares no início, mas viram lineares após substituição.",
+                    "Sempre simplifique a álgebra antes de classificar."
                 ],
-                example: "<strong>Desafio Físico de Concentração:</strong> Um problema resulta na forma diferencial não linear: $y' = x e^{-y}$\n\n<strong>Passo 1 (Desacoplamento de Notação Clássica):</strong>\n$$\\frac{dy}{dx} = \\frac{x}{e^y}$$\n\n<strong>Passo 2 e 3 (Realocação Frontal dos Blocos Variáveis):</strong>\nCruzamos as bases para que cada diferencial reine supremo sob o espectro das suas mesmas variáveis:\n$$e^y \\, dy = x \\, dx$$\n\n<strong>Passo 4 (Disparo das Integrações Simultâneas Inflexíveis):</strong>\n$$\\int e^y \\, dy = \\int x \\, dx$$\n$$e^y = \\frac{x^2}{2} + C$$\n\n<strong>Passo 5 (A Fuga do Isolamento Via Logaritmo Neperiano):</strong>\nPara trazer o $y$ para fora do expoente celestial de Euler, injetamos a operação contundente logarítmica natural $\\ln(\\cdot)$ englobando a totalidade monumental dos corpos localizados à esquerda e à direita:\n$$\\ln(e^y) = \\ln\\left(\\frac{x^2}{2} + C\\right)$$\n\n<strong>Solução Explícita Definitiva:</strong>\n$$y(x) = \\ln\\left(\\frac{x^2}{2} + C\\right)$$"
+                example: "$$xy'+2y=4x^2\quad\Rightarrow\quad y'+\frac{2}{x}y=4x$$"
             },
-
-            'exata': {
-                title: "Equação Diferencial Exata de 1ª Ordem", 
-                badge: "MÉTODO AVANÇADO DE CÁLCULO VETORIAL", 
-                condition: "$$M(x,y)dx + N(x,y)dy = 0 \\quad \\text{ancorado pela condição sine qua non:} \\quad \\frac{\\partial M}{\\partial y} = \\frac{\\partial N}{\\partial x}$$",
-                concept: "Uma equação possui o título de \"Exata\" por causa de seu cordão umbilical indissociável oriundo dos preceitos profundos do Cálculo Diferencial Vetorial de Múltiplas Variáveis Reais. No caso em que o laço das derivadas cruzadas é positivamente satisfeito e estabilizado, provamos conclusivamente que as extensões de forças representadas pelas funções $M$ e $N$ originam em sua totalidade um gigantesco campo vetorial inerentemente conservativo. O achado atesta a ocorrência fantasma subjacente de um corpo primordial supremo batizado de \"Função Potencial Conservativa $F(x,y)$\", sendo que a manifestação da EDO original trata-se tão somente de sua formatação crua Diferencial Total perfeitamente nula e em equilíbrio perpétuo (onde $dF = 0$).",
+            linear_question: {
+                title: "A EDO de 1ª ordem é linear?",
+                badge: "teste de linearidade",
+                condition: "$y'+P(x)y=Q(x)$",
+                concept: "Uma EDO de 1ª ordem é linear quando $y$ e $y'$ aparecem apenas na primeira potência, sem produtos entre si e sem funções não lineares como $y^2$, $\sin y$, $e^y$, $(y')^2$ etc.",
                 steps: [
-                    "<strong>1. Isolamento Operacional Identitário:</strong> Confirme a configuração da malha isolando e catalogando o elemento macro de $M$ (função componente indissociável adjacente ao diferencial paramétrico primário $dx$) em uníssono com o elemento $N$ (a função adjacente colada ao bloco de $dy$).",
-                    "<strong>2. A Lei Suprema da Exatidão Transversal (Condição Obrigatória Absoluta):</strong> Destrua a dúvida provando o balanceamento em cruz via de derivadas parciais paramétricas reversas. Derive o bloco que domina $x$ ($M$) focando na variável de contraparte $y$ ($\\frac{\\partial M}{\\partial y}$). Em seguida, derive a zona oposta $N$ unicamente com base estrutural no reflexo $x$ ($\\frac{\\partial N}{\\partial x}$). Se forem idênticas no detalhe microscópico universal, o teste exato aprova. Caso o choque resulte diferente, as opções foram exauridas (recorra então à conversão por Fatores Integrantes Especiais de Exatidão Forçada).",
-                    "<strong>3. Prolapso Paramétrico de Recuperação Primordial:</strong> A reconstrução da matriz potencial conservativa ancestral $F(x,y)$ se deflagra com a absorção em integral definida na variável do corpo representativo de dominância temporal de $M$, mas tratando rigorosamente todas e quaisquer exibições de $y$ como constantes engessadas frias e intransigentes:\n$$F(x,y) = \\int M \\, dx + h(y)$$ \n(Sendo $h(y)$ não uma mera letra de constante solta global, mas uma função inteira desconhecida puramente alocada unicamente sobre os parâmetros isolados em variações puras de $y$).",
-                    "<strong>4. Convergência da Malha do Resíduo Potencial Oculto:</strong> Pegue o corpo recém-gestado do constructo $F(x,y)$ delineado acima. Extraia a derivada parcial rigorosa dessa nova estrutura agora unicamente com ancoragem restrita focada somente na variável subalterna $y$. Posicione a igualdade batendo de frente estrita com a segunda função primária ancestral original do sistema: $N(x,y)$.",
-                    "<strong>5. Purificação Algébrica Analítica Restrita:</strong> Operacionalize a anulação simétrica cruzada. Isso garantirá o desmoronamento completo permitindo isolar a engrenagem misteriosa do balanço paramétrico resíduo-direcional de $h'(y)$. Aja em cima disso injetando a força de integral focal normal contra $h'(y)$ descobrindo com a finalidade exata e estanque da função estática bruta subjacente restrita em resíduos de dependência unitária base da referida estrutura da variável de $h(y)$.",
-                    "<strong>6. Fixação de Âncora Global Constante Definitiva:</strong> Retome a estrutura congelada na fase deflagrada em 3. Substitua o termo descoberto e consolide tudo perante a equalização na constante de incerteza dimensional $C$ generalizada."
+                    "<strong>1.</strong> Coloque tudo na forma $a_1(x)y'+a_0(x)y=g(x)$.",
+                    "<strong>2.</strong> Divida por $a_1(x)$, se necessário.",
+                    "<strong>3.</strong> Se aparecer só $y'+P(x)y=Q(x)$, use fator integrante.",
+                    "<strong>4.</strong> Se surgir $y^n$, produto $yy'$, $\ln y$, $e^y$ etc., ela não é linear."
                 ],
                 tips: [
-                    "Sempre preste extrema vigilância mental contra armadilhas e deslizes cruciais de concentração extrema ocorridos na operação paramétrica multivariada fracionada. Ao executar a integral base focada atrelada restrita na função de dependência fundamental vinculada ao corpo do vetor de $x$, o termo flutuante paramétrico cruzado de referenciamento espelho global sobre o $y$ precisa agir com peso e rigidez absolutos com equivalência estanque igual ao de números inorgânicos parados no vácuo de uma abstração irreal sem flutuações e variáveis orgânicas paramétricas (como um singelo número estático bruto universal 5 ou 10 ou 100).",
-                    "Quando o fechamento tático exigir o igualamento posicionado na arquitetura vital da seção englobada e estruturada pela fase operacional citada ao redor do subíndice paramétrico Passo 4, todos e os exatos termos vitais portadores e detentores do parâmetro cruzado orgânico direcional $x$ são constrangidos de modo peremptório, dogmático e incontornável de precisarem se pulverizar ou aniquilar de sua base da sub-existência cancelativa. Se por obra do infortúnio persistir a sobra parasita viva de um mísero fragmento atrelado à constante $x$ habitando na esfera subjacente da dependência equacional da subestrutura vinculante base fundamental alocada com referenciamento estrito para os trâmites do constructo do fragmento estático correspondente em direção dimensional única ao da representação flutuante purificada contínua do corpo e engrenagem principal de formatação paramétrica base atrelada com ancoragem ao da designação subjacente formatada sobre o de subíndice do núcleo engrenado derivado restrito fracionário correspondente em $h'(y)$, um colapso aritmético, de sinal paramétrico transversal, algébrico restrito derivativo e de manipulação algébrico contínuo universal aconteceu num erro nefasto cometido nas alçadas anteriores englobantes e de etapas vitais e pregressas."
+                    "$Q(x)$ pode ser zero. Ainda assim a equação continua linear.",
+                    "Bernoulli não é linear no formato original, mas pode virar linear após substituição."
                 ],
-                example: "<strong>O Campo de Força Exato Conservativo Subjacente:</strong> Um problema fundamental: $ (2xy + \\cos(x))dx + (x^2 + e^y)dy = 0 $\n\n<strong>Etapa 1: A Captura Frontal e Isolada Funcional Vetorial Orgânica Primária</strong>\nIdentificamos o arcabouço com a extração de que a força de formatação vetorial horizontal estrutural atrelada reside integralmente no espectro analítico base parametrizado com referencial cruzado em subordinação de variável dominante primária direcional vinculativa universal horizontal correspondente de dependência vetorial analítica restrita transversal alocada nas delimitações de engajamento do escopo direcional flutuante do domínio espectral dependente da formatação transversal restrita parametrizada correspondente em e em alocação sobre e do que é chamado universalmente ao escopo de referenciamento posicional focado sobre da forma e da força motriz orgânica contínua fundamental: $M = 2xy + \\cos(x)$ em contrapartida uníssona com a função restritiva de dependência do eixo cruzado $N = x^2 + e^y$.\n\n<strong>Etapa 2: A Validação Crítica Operacional Focada no Resíduo de Transversalidade Relativa Primordial Múltipla</strong>\n$$\\frac{\\partial M}{\\partial y} = 2x \\quad \\text{e de modo espelhado uníssono contra a base de formatação de sub-derivativa} \\quad \\frac{\\partial N}{\\partial x} = 2x$$\n(O balanceamento aprova! A equação encontra-se indubitavelmente ancorada na estabilidade perfeitamente exata global de uma matriz paramétrica subjacente paramétrica conservativa estrita baseada nas restrições de formatações do de derivadas de trânsitos contínuos).\n\n<strong>Etapa 3: Deflagrando a Matriz Sub-Mãe Focada em Formatação Cruzada Restritiva Paramétrica da Conservação Total</strong>\nIntegramos estritamente com ancoragem rígida baseada nos eixos isolados formatados restritos no campo de absorção espectral dependente focado da força transversal principal horizontal da função correspondente referenciada em $M$, mantendo o $y$ estático engessado como pedra na matriz do tempo:\n$$F(x,y) = \\int (2xy + \\cos(x)) dx$$\n$$F(x,y) = x^2y + \\sin(x) + h(y)$$\n\n<strong>Etapa 4: Descobrindo e Extraindo o Fator Constante da Engrenagem Orgânica da Deformação Mística</strong>\nDerivamos essa nova malha puramente em função da restritiva transversal ancorada em sub-paramétrica direcional cruzada restrita analítica dependente em $y$, com subsequente pareamento direto forçado inabalável focado e referenciado contra a integralidade fundamental contínua focada da forma orgânica de força oposta da representatividade paramétrica fundamental contínua base estruturada em formatação vinculativa base focada e referenciada como eixo em $N$:\n$$\\frac{\\partial F}{\\partial y} = x^2 + 0 + h'(y) \\implies x^2 + h'(y) = x^2 + e^y$$\n\n<strong>Etapa 5 e 6: A Queda das Cortinas de Isolamento na Equalização Constante Focada Paramétrica da Estabilidade Unificada Contínua</strong>\nVerificamos com êxtase aliviante o fulminante cancelamento orgânico e estrutural focado em formatação da aniquilação perfeita e simultânea das variáveis opostas contínuas subjacentes paramétricas e transversais ancoradas purificadas nas malhas do de $x^2$.\n$$h'(y) = e^y \\implies h(y) = \\int e^y \\, dy = e^y$$\n\n<strong>Resolução Implícita Geral Definitiva de Potencial Vetorial Conservativo Acoplada Global Subjacente Restrita Focada Perfeita:</strong>\n$$x^2y + \\sin(x) + e^y = C$$"
+                example: "Linear: $$y'+\frac{2}{x}y=4x$$\nNão linear: $$y'+xy=y^2$$"
             },
-            
-            'coef_variaveis': {
-                title: "Equações de Coeficientes Variáveis",
-                badge: "CLASSIFICAÇÃO AVANÇADA DE 2ª ORDEM",
-                condition: "A EDO apresenta termos multiplicadores focados em formatação onde funções de $x$ acompanham e estão atreladas em acoplamentos base diretamente sobre as derivadas.",
-                concept: "As equações diferenciais de segunda ordem com coeficientes não constantes (ou seja, quando há $x$ multiplicando $y''$ ou $y'$) formam a base fundamental absoluta da mecânica quântica, propagação eletromagnética em guias de ondas, e a dinâmica profunda da distribuição térmica esférica subjacente paramétrica e em radiação de energia acústica focada cilíndrica. Neste reino, o comportamento das exponenciais não sobrevive à variação estrutural do meio referenciado.",
+            fator_integrante: {
+                title: "Fator Integrante",
+                badge: "1ª ordem linear",
+                condition: "$$y'+P(x)y=Q(x)$$",
+                concept: "O fator integrante transforma o lado esquerdo em uma derivada de produto. O truque é multiplicar toda a equação por $\mu(x)=e^{\int P(x)dx}$.",
                 steps: [
-                    "A presença de variáveis multiplicando as derivadas força o aluno a realizar um teste crítico rigoroso de balanceamento.",
-                    "Se as potências do coeficiente em $x$ colidirem perfeitamente em paridade estrita em subordinação com as ordens contínuas atreladas às formatações de dependência paramétrica subjacente vinculativa correspondente de cada uma das derivadas (ex: $x^2$ alocado ao $y''$, e $x$ isolado solto atrelado de forma focada e fixada de modo indissociável sobre a correspondência restritiva transversal sub-operante de variação do $y'$), a técnica salvadora e exclusiva do modelo paramétrico contínuo alocado como fundamental em bases de formulação algébrica será a formatação canônica atrelada de substituição dimensional geométrica correspondente da de Equação Especial Estruturada por base polinomial focado e parametrizado como Equidimensional e referenciado fundamental do <strong>Cauchy-Euler</strong>.",
-                    "Se houver distorção caótica desregulada no balanceamento da paridade entre os graus algébricos cruzados paramétricos correspondentes de restrições das potências do fator atrelado de $x$ frente às ordens das derivações conjuntas da EDO orgânica subjacente estruturada sub-base, o modelo entra em falha absoluta para Cauchy-Euler. A única saída matemática será invocar a poderosa e temida aproximação infinita por intermédio orgânico de absorção focado e ancorado no infinito de e sobre <strong>Séries Analíticas Convergentes de Potências Unificadas e Taylorianas</strong>."
+                    "<strong>1.</strong> Escreva a equação como $y'+P(x)y=Q(x)$.",
+                    "<strong>2.</strong> Calcule $\mu(x)=e^{\int P(x)dx}$.",
+                    "<strong>3.</strong> Multiplique toda a equação por $\mu(x)$.",
+                    "<strong>4.</strong> Reescreva como $(\mu y)'=\mu Q(x)$.",
+                    "<strong>5.</strong> Integre: $\mu y=\int \mu Q(x)\,dx + C$.",
+                    "<strong>6.</strong> Isole $y$."
                 ],
                 tips: [
-                    "O ponto de verificação de $x=0$ muitas vezes é uma singularidade (uma divisão por zero e explosão analítica). A expansão de Taylor simples não funciona perto dessa anomalia contínua. Devemos mudar a tática e invocar o Teorema Exato Restritivo Paramétrico e Contínuo e Direcional Alocado de Base Focada de <strong>Frobenius</strong> nestas zonas turbulentas."
+                    "Não coloque a constante $+C$ dentro de $\int P(x)dx$ ao calcular $\mu(x)$.",
+                    "Sempre confira se o coeficiente de $y'$ é 1 antes de começar."
                 ],
-                example: "Equação com balanceamento de Euler: $x^2 y'' + 4xy' + 2y = 0$\n\nEquação sem o balanceamento, necessitando desesperadamente de Séries (A Clássica e imortal Equação Acústica Quântica Focada Transcendental Orgânica base formatada paramétrica de <strong>Bessel de ordem nula e de estabilidade analítica nula em origem cruzada restrita de tempo focal estrutural unificado nulo</strong>):\n$$x^2 y'' + xy' + (x^2 - p^2)y = 0$$"
+                example: "$$xy'+2y=4x^2$$\n$$y'+\frac{2}{x}y=4x$$\n$$\mu=e^{\int 2/x\,dx}=x^2$$\n$$(x^2y)'=4x^3$$\n$$x^2y=x^4+C$$\n$$y=x^2+\frac{C}{x^2}$$"
             },
-            
-            'cauchy_euler': {
-                title: "Equação Equidimensional de Cauchy-Euler", 
-                badge: "MÉTODO DE COEFICIENTES VARIÁVEIS", 
-                condition: "$$ax^2 y'' + bxy' + cy = 0$$",
-                concept: "No século XVIII, Leonhard Euler e Augustin-Louis Cauchy decifraram de forma brilhante o código oculto da física propagatória em meios que se esticam (dimensões esféricas/polares contínuas). Ao perceberem a simetria perfeita em EDOs onde a queda de grau de um polinômio devido à derivada de potência $x^m$ era imediatamente contrabalanceada pelo fator de aumento que vinha de fora no formato multiplicativo exato $x^2$ ou $x$, eles descobriram que uma potência pura geométrica e orgânica baseada em logaritmos naturais formatada como o simples monômio focado analiticamente como forma em $y = x^m$ serviria como a chave mestra absoluta para converter esta EDO instável de coeficientes que se deformam variáveis cruzados num sistema puro algébrico quadrático rígido estático e altamente de domínio focado contínuo e orgânico.",
+            nao_linear_question: {
+                title: "A EDO não é linear: qual classe ela parece seguir?",
+                badge: "triagem não linear",
+                condition: "Busque padrões especiais",
+                concept: "Nem toda EDO não linear é resolvível por uma única técnica. O segredo é identificar o padrão estrutural. Em cursos básicos, os mais frequentes são separável, exata, Bernoulli, homogênea de 1ª ordem e Riccati.",
                 steps: [
-                    "<strong>1. Verificação da Geometria Dimensional Unificada Focada:</strong> Assegure em plenitude incontestável de que a carga orgânica algébrica formatada e imposta dimensionalmente no modelo paramétrico pela expoente exata na variável que porta a referência $x$ em multiplicidade alinhada está de modo imaculado em paralelo casada transversalmente de grau absoluto a grau simétrico perfeitamente atrelado com a formatação e número da ordem direcional atrelada e exigida da derivação atrelada correspondente cruzada que opera nela (isto é: $x^2$ está amarrado ao formador subjacente da segunda ordem $y''$, $x^1$ encontra-se acoplado organicamente ao primeiro operador de derivação restrito base da formulação alocada sub-derivativa principal $y'$).",
-                    "<strong>2. O Ansatz Geométrico:</strong> Abandone as exponenciais temporais antigas do passado clássico da modelagem. Introduza e assuma com vigor implacável que a resposta canônica definitiva global subjacente e analítica segue a morfologia polinomial estrita e contínua e direcional focada e ancorada no paramétrico formatado universal contínuo de: $y = x^m$.",
-                    "<strong>3. A Equação Indicial Secreta Mestra (A Fase Crítica e Mais Perigosa):</strong> Injete a proposta da morfologia estrita orgânica em formatação derivada consecutiva em subordinação de formatação correspondente dentro de e focado na estrutura principal originária correspondente formatada base e referencial em Cauchy e Euler na própria EDO. Sabendo-se da mecânica algébrica e da lei estrutural focada de que a derivação dupla estrita em função direcional temporal parametrizada focada de uma função contínua polinomial orgânica simples formatada por base $x^m$ deflagra incontrolavelmente como espólio de restos o resíduo subjacente interno acoplado numérico contínuo sub-base restrito numérico multiplicativo originado organicamente interno de $m(m-1)$, todos e quaisquer os termos contínuos transversais de domínio geométrico atrelados nas malhas da dependência de e focado numérico em base fundamental de referência de formatação base de Euler nas representações paramétricas focadas na constante escalar $x^m$ e se simplificarão, aniquilando a referida dependência variável. Assim, destila-se organicamente a formatação perfeitamente rígida contínua numérico constante escalar batizada formalmente da Equação Indicial e Analítica Focada Modificada Orgânica Estrutural:\n$$a\\,m^2 + (b-a)m + c = 0$$",
-                    "<strong>4. Categorização Estrita das Espécies das Raízes (A Estrutura Final da Malha):</strong>\n- <strong>Sistema de Propagação Simples (Raízes Reais Distintas e Desacopladas em Base Contínua Cruzada e Focada Múltipla):</strong> \n  $$y = C_1 x^{m_1} + C_2 x^{m_2}$$\n- <strong>Ressonância Crítica no Espaço Geométrico Cilíndrico (Multiplicidade Resultante em Raiz Real Dupla Singular e Idêntica):</strong> Neste caso nevrálgico, a dependência geométrica força a segunda solução contínua de base orgânica e simétrica paramétrica de estabilidade paramétrica atrelada no domínio focada transversal a escalar o eixo referencial dimensional do espaço base do problema injetando organicamente uma estrutura logarítmica subjacente:\n  $$y = x^m(C_1 + C_2 \\ln x)$$\n- <strong>Oscilações no Meio Restrito (O Fenômeno do Choque Estrutural em Raízes puramente Complexas Conjugadas Simétricas em $m = \\alpha \\pm i\\beta$):</strong> A física dita que oscilações espaciais geométricas num domínio distorcido sub-exponencial assumem frequências logarítmicas de translação de base temporal geométrica purificada e orgânica:\n  $$y = x^\\alpha [C_1 \\cos(\\beta \\ln x) + C_2 \\sin(\\beta \\ln x)]$$"
+                    "<strong>1.</strong> Tente separar $x$ e $y$ em lados opostos.",
+                    "<strong>2.</strong> Tente escrever como $M(x,y)dx+N(x,y)dy=0$.",
+                    "<strong>3.</strong> Veja se há formato $y'+P(x)y=Q(x)y^n$ (Bernoulli).",
+                    "<strong>4.</strong> Veja se $y'=F(y/x)$ ou $M$ e $N$ são homogêneas do mesmo grau.",
+                    "<strong>5.</strong> Se aparecer termo quadrático em $y$, teste Riccati."
                 ],
                 tips: [
-                    "<strong>O Gatilho de Armadilha de Eliminação do Professor Universitário Padrão Absoluto:</strong> A formatação da Equação Indicial na parte central sofre de uma contaminação orgânica e torção de ajuste dimensional e não pode, sob hipótese alguma, usar o valor limpo e estático extraído referencial paramétrico da EDO no modelo atrelado focado do $b$ direto! A absorção orgânica residual e paramétrica advinda da regra de potências deriva e força incondicionalmente a substituição central orgânica na fórmula por $(b-a)$. Se por acidente ou negligência o aluno ou aluna utilizar a clássica formatação quadrática comum contínua paramétrica focada $am^2 + bm + c = 0$, a questão estará inapelavelmente e fulminantemente colapsada e destruída na sua totalidade sistêmica de pontuação.",
-                    "O domínio da base subjacente das soluções em formato de logs naturais e em subordinação com as potências $x^m$ requer, por razões fundamentais das leis rigorosas de cálculo contínuo, uma restrição orgânica e estrutural focada puramente de dependência paramétrica com foco em $x > 0$."
+                    "Uma simples troca de variável pode revelar a classe escondida.",
+                    "Em prova, separar corretamente a classe costuma valer mais do que decorar fórmulas."
                 ],
-                example: "<strong>Resolução de Potencial Eletrostático Cilíndrico em EDO Euleriana de Coeficientes que Distorcem Geograficamente Contínuo Restrito Subjacente Alocado e Focado no Meio Operacional Atrelado Paramétrico Cruzado:</strong> $x^2 y'' - 3xy' + 4y = 0$\n\n<strong>Passo 1 (Coleta Tática Analítica dos Dados Brutos Originais Simétricos Inalterados Direcionais Paramétricos Base Unificados Constantes):</strong> O balanceamento é estruturalmente impecável. Extraímos puramente a informação nua: $a=1, b=-3, c=4$.\n\n<strong>Passo 2 e 3 (Construção da Matriz Focada da Equação Restritiva Paramétrica Oculta Indicial Unificada Corrigida Geograficamente Orgânica de d'Alembert-Cauchy-Euler):</strong>\nO esqueleto subjacente da formatação canônica restrita imposta paramétrica ditames geométrico numérico constante estrito requer $(1)m^2 + (-3 - 1)m + 4 = 0$:\n$$m^2 - 4m + 4 = 0$$\n\n<strong>Passo 4 (Exame da Patologia Restritiva das Frequências Operacionais Numéricas Extraídas Pelo Resolutor Bhaskarano Analítico Focado Formulado):</strong>\nExtirpando as raízes via fatoração direta orgânica, notamos a multiplicidade unificada da convergência em $(m-2)^2 = 0$. Extraímos de forma cristalina um choque formacional em raízes perfeitamente duplicadas alocadas subjacentes e sobrepostas parametrizadas e atreladas organicamente no mesmo referencial focal contínuo numérico base de: $m_1 = m_2 = 2$.\n\n<strong>Solução Dinâmica Resultante Paramétrica Final Estendida pela Correção Logarítmica Obrigatória:</strong>\n$$y(x) = x^2(C_1 + C_2 \\ln x)$$"
+                example: "$$y'=xe^{-y}\;\Rightarrow\;\text{separável}$$\n$$y'+y=xy^2\;\Rightarrow\;\text{Bernoulli}$$"
             },
-
-            'series': {
-                title: "Soluções Absolutas em Séries Infinitas Analíticas Geométricas Taylorianas", 
-                badge: "O RECURSO FINAL MATEMÁTICO UNIVERSAL DE EDOs DE ALTA COMPLEXIDADE TRANSCENDENTE", 
-                condition: "A EDO apresenta coeficientes que são compostos de variáveis estruturalmente orgânicas polinomiais complexas intrincadas misturadas que não conseguem, em hipótese de modelagem geométrica alguma analítica, obedecer ou se conformar perante as leis do alinhamento simétrico perfeito da classe de Cauchy-Euler.",
-                concept: "No clímax e zênite supremo do rigor na teoria equacional atrelada contínua, nos deparamos assustadoramente com fronteiras e limites e obstáculos intransponíveis matemáticos no espectro analítico base estruturado que destroem e desafiam violentamente a capacidade analítica global estática formulada fechada na literatura matemática secular contínua fechada pura (fórmulas limpas exatas orgânicas em funções trigonométricas conhecidas, e constantes e funções e coeficientes exponenciais prontas não resolvem o modelo atrelado ou as derivadas complexas geradas). Perante a EDOs quânticas indomáveis de Airy ou de Legendre e da equação vibratória cilíndrica universal termodinâmica e elétrica eletromagnética baseada contínua focado analítico Besseliano (Bessel), invoca-se a 'Força Bruta do Infinito Analítico Funcional Tayloriano Focado Universal Orgânico Direcional Paramétrico Base Simétrico Parametrizado Subordinado Contínuo Mestre Absoluto Múltiplo e Integral'. A tese magnânima central afirma inflexivelmente de forma empírica teórica que a resposta da EDO subjacente paramétrica e as de suas variações direcionais analíticas devem e irão se conformar submissamente no formato uníssono estrito alocado infinito de Séria Convergente Inteira Polinomial Múltipla Gradual Analítica e Focada de Potência (Taylor/Maclaurin) orgânica infinitamente contínua infinita e extensa e densa gradiente unificada contínua formatada ao redor do eixo temporal contínuo e analítico centralizado e ancorado no eixo zero base paramétrico.",
+            separavel: {
+                title: "Variáveis Separáveis",
+                badge: "1ª ordem",
+                condition: "$$f(y)dy=g(x)dx$$",
+                concept: "Se a equação puder ser reorganizada de modo que tudo com $y$ fique de um lado e tudo com $x$ do outro, basta integrar ambos os lados.",
                 steps: [
-                    "<strong>1. A Proposição da Arquitetura do Infinito Estritamente Formulado e Estruturado Geograficamente Múltiplo Analítico Base Simétrico Focado Direcional Finito Gradual Central:</strong> Assuma empiricamente e categoricamente sob a autoridade da análise absoluta funcional de dependência paramétrica de convergência base focada transversal que o conjunto de funções da solução obedece a e requer intrinsecamente e demanda rigorosamente por alinhamento estrutural no formato base contínuo atrelado polinomial estritamente centrado analiticamente e ordenadamente orgânico em ponto de estabilidade ordinária de expansão temporal inicial alocado e formulado em $x_0 = 0$ e estruturado infinitamente contínuo no modelo de Maclaurin orgânico paramétrico e direcional focada:\n$$y = \\sum_{n=0}^{\\infty} c_n x^n$$",
-                    "<strong>2. Aniquilação Focada nas Condições das Baixas Ordens Estruturais Baseadas em Expansão das Diferenças Sucessivas Infinitas Direcionais Funcionais e Formatações Derivativas das Ordens Altas e Complexas Infinitas (Formatação Progressiva de Ajuste Numérico Paramétrico Subordinado de Regras Orgânicas Liminares Derivativas Focadas Atreladas e Contínuas Transversais de Translação):</strong> Derive a série magistral mãe de forma mecânica cega e repetitiva paramétrica e puramente genérica focado termo a e submetendo a regras de potências atreladas orgânicas derivadas. O bloco direcional analítico subjacente de formatação limiar inferior indicial numérico e da base estruturante atrelada restritiva fundamental indicativa numérico e temporal contínua atrelada ao subíndice focada inferior $n$ sofre translação para cima orgânico natural direcional progressivo temporal contínuo em deslocamentos purificados numérico paramétricos à medida em que os termos e blocos orgânicos soltos constantes nulos se desfazem, quebram e se aniquilam caindo em anulações:\n$$y' = \\sum_{n=1}^{\\infty} n c_n x^{n-1}$$\n$$y'' = \\sum_{n=2}^{\\infty} n(n-1) c_n x^{n-2}$$",
-                    "<strong>3. Choque Direcional e Manipulação Cirúrgica no Exame de Igualdade de Grau e Injeção Absoluta Indicial (Mudança do Subíndice Múltiplo Unificado de Bases Temporais e Funcionais Focadas Integradas Uníssonas Cegas Focadas Anuladoras Parametrizadas e Expansivas Contínuas no Espectro Variável Contínuo):</strong> Injete as três séries mães titânicas desestabilizadas e infinitas descritas cruamente e rigorosamente sem medo novamente na escuridão funcional no seio e na complexidade estrutural e no coração e estrutura profunda atrelada e base estruturante matriz de formatação original focado uníssono da base subjacente da estrutura atrelada fundamental original contínuo da EDO original na sua base funcional de formulação geométrica primária transversal focada. Se a malha matemática funcional contínua focada atrelada base da própria e da mesma da malha do domínio do meio de formatação contínua transversal orgânico geométrico orgânica primitiva referencial e subjacente matriz e referenciamento direcional base funcional da geometria do sistema dinâmico alocado matriz paramétrico contínuo de matriz atrelado correspondente de da EDO portar soltos isolados sub-blocos dispersos formados de blocos contínuos subjacentes espalhados orgânicos atrelados e dependentes polinomiais purificadores base dependente em domínios alocados atrelados estruturantes formadores em base dependentes em $x$ no espaço exterior de suas referências, introduza, puxe e arraste e absorva eles violentamente para dentro do núcleo sub-interno direcional convergente referencial geométrico focado absorvedor e purificador denso numérico sub-indicial matriz interno escuro absorvente de translação de esmagamento contínuo subordinativo denso restrito contínuo escuro abissal do campo gravitacional fechado delimitante do ventre de restrição de absorvimento esmagamento somatório base do abismo. A tática de sobrevivência matemática central reside unicamente na necessidade em executar malabarismos profundos de 'Deslocamento Fantasma Focado das Unidades' de base de referenciamento na métrica do sub-índice algorítmico interno analítico focado subjacente algébrico e orgânico das séries focado direcional a de a formatação restrita no meio contínuo no meio algorítmico da variável focada do índice unificado base e de contagem paramétrico temporal atrelada base funcional orgânica focada e subjacente puramente focada do relógio do meio de focado atrelada paramétrica temporal contínua da e de forma que universalmente garantamos a estabilização forçada em todas as frentes orgânicas das séries desordenadas resultantes isoladas focado transversal subordinada e que, fundamentalmente uníssona orgânica atrelada contínua, elas encerrem perfeitamente sua estrutura funcional ancorada subordinada no núcleo espelhado referenciado atrelado padronizado transversal purificado estático na referência fundamental direcional atrelada orgânica transversal de simetria do padrão orgânico isolado base estanque unificado alocado no bloco subjacente purificador do modelo numérico matriz da incógnita analítica em e focado no grau subjacente matriz do contínuo atrelada: $x^k$.",
-                    "<strong>4. Fechamento Analítico Infinito Final e Cristalização Focada Uníssona na Relação Fundamental Orgânica (Descoberta da Equação de Recorrência Base e Matriz Infinita do Destino):</strong> Combine as engrenagens numéricas isoladas. O universo matemático prova contínuo que todo somatório resultante orgânico igualado perfeitamente no zero nulo no vácuo de uma abstração exige a submissão infinita e a aniquilação perfeita e o estancamento de seus e dos formadores dos termos nulos numéricos atrelados contínuos atrelados coeficientes soltos no vazio restrito e geral base orgânico em todos e nos confins diretos unificados constantes contínuos e focado alocado e uníssono sub-referencial e em todas as alçadas dos escalões unificados transversais dos contínuos infinitos e dos numéricos focados transversais e referenciados no espaço tempo atrelados paramétricos de contagem alocados focados focado de no nível geral. Extraia as constantes puras. Crie e isole algebricamente uma relação uníssona para o e deflagrada matriz e focada e de purificadora puramente no elemento paramétrico supremo do e matriz focal paramétrico do $c_n$ no topo e baseado puramente atrelado no passado temporal atrelado focada e de e de focados isolado em e formatada nos índices orgânicos atrelados anteriores antigos do e atrelado na restrição do e atrelados paramétricos anteriores focada na relação focado isolada estanque dos do $c_{n-1}$, do $c_{n-2}$. Essa chave abre as portas para todas as infinitas constantes do infinito do mundo."
+                    "<strong>1.</strong> Escreva $y'$ como $dy/dx$.",
+                    "<strong>2.</strong> Agrupe os termos com $y$ e $dy$ de um lado.",
+                    "<strong>3.</strong> Agrupe os termos com $x$ e $dx$ do outro.",
+                    "<strong>4.</strong> Integre os dois lados.",
+                    "<strong>5.</strong> Isole $y$, se possível."
                 ],
                 tips: [
-                    "A alteração dos ponteiros do tempo do somatório é perturbadora: Se o seu somatório original diz e mostra que uma determinada parte focada tem o ponteiro $n=2$ abrigando internamente o grupo $x^{n-2}$, e você necessitar subir todos os graus do $x$ convertendo eles a todo e qualquer o do bloco da base sub-orgânica no formador paramétrico $x^n$, basta reescrever as letrinhas e substituir tudo que era $n$ puro por $n+2$, e recuar e retardar o início do laço e da contagem e do motor do somatório subtraindo $2$ do limite unificado temporal indicial inferior, caindo o motor na partida alocado e no reinício numérico referenciado no bloco nulo $n=0$."
+                    "A constante de integração entra depois das integrais.",
+                    "Muitas leis físicas elementares levam a EDOs separáveis."
                 ],
-                example: "Equação de Airy da Física Óptica de Vibração: $y'' - xy = 0$\n\nA complexidade exige e demanda o poder da Série.\nAo aplicarmos focado a matemática e esmagar a EDO fundindo num bloco unificado somatório os motores de e forçando com rigor a mudança mecânica purificadora dos índices de potência de bases e a formatação geométrica dos ponteiros focado em tempo direcional do sub-relogio temporal de formatação focada das constantes dos limites na forma dos formadores dos numéricos focado dos e na formulação purificadora das malhas nas séries contínuas isoladas e das derivadas puras numéricas nos somatórios unificados transversais paramétricos isoladas subordinadas contínuas paramétricos uníssonos paramétricos atreladas transversais contínuas no da forma dos:\n$$\\sum_{n=2}^{\\infty} n(n-1) c_n x^{n-2} - \\sum_{n=0}^{\\infty} c_n x^{n+1} = 0$$\n\nApós os deslocamentos e purificação na unificação do agrupamento focado temporal da série do relógio, derivamos a sagrada e implacável <strong>Relação de Recorrência Focada</strong> para os constantes atrelados infinitos focados na solução matriz formadora das constantes atreladas orgânica e direcional do conjunto referenciado da solução estanque formatada uníssona analítico universal infinita no contínuo dos coeficientes numéricos focada no limite matriz base da referenciada focada nas equações paramétrica de:\n$$c_{n+2} = \\frac{c_{n-1}}{(n+2)(n+1)}$$"
+                example: "$$y'=xe^{-y}$$\n$$e^y\,dy=x\,dx$$\n$$\int e^y\,dy=\int x\,dx$$\n$$e^y=\frac{x^2}{2}+C$$\n$$y=\ln\left(\frac{x^2}{2}+C\right)$$"
             },
-
-            'reducao_ordem': {
-                title: "Teorema de Redução de Ordem Analítico Subjacente e Restrito de d'Alembert (Distorção Paramétrica Geográfica Restritiva Contínua Base e Atrelada em Rebaixamento de Malhas Numéricas Funcionais Sub-Analíticas Restritivas Focadas Finitas Direcionais)", 
-                badge: "O RECURSO ESTRATÉGICO SECRETO MAGNO E DEFINITIVO CONTRA IMPASSES E AMARRAS E DISTORÇÕES FOCADAS NUMÉRICAS EM EDOs INCOMpletas E PARAMÉTRICAS REBELDES NA SUBORDINAÇÃO GEOMÉTRICA FOCADA NO CONTÍNUO E DE GRAU ALOCADO", 
-                condition: "Gatilho Sistêmico Bifurcado em Dois Cenários Catastróficos Paralelos Isolados e Focados no Abismo Paramétrico e Alocado Restrito Analítico Temporal Estático de Abstenção na Modelagem Base de Referenciamento Numérico Contínuo Focado Subjacente Constante:\n\n<strong>Cenário da Malha Mutilada Primária Funcional Abstrata Incompleta Paramétrica e Oculta:</strong> A EDO sofreu severa mutação da forma e não comporta nem atrela mais e nem apresenta de modo e de na e de forma nenhuma paramétrica estanque da função de e a de na sua e nem a base estanque formatada original da e e e de de a na restrição focada nativa da do a orgânica formadora matriz focada no eixo focado original contínuo do e nativo e base e e a natural e fundamental natural livre subordinada e na da base solta não-derivada restritiva fundamental do próprio e e em e na formatação da e e e do do $y$.\n\n<strong>Cenário do Preço Sub-Paramétrico do Conhecimento Atrelado Direcional e Baseado Paramétrico Base Orgânico Focado Geográfico de Referenciamento Numérico Parametrizado:</strong> O mestre avaliador num rasgo benevolente de piedade suprema ofertou de presente em sacrifício subjacente atrelado na questão focada e no corpo sub-base do e formulou perante e de e deu gratuitamente para o uso e manuseio da avaliação base formatada numérico atrelada focada do estudante a fundação estruturada da e o e formatado uma base da da e e da sub-solução primária estanque natural inicial livre fundamental contínua do de a forma nativa do da do e original contínuo $y_1$.",
-                concept: "Um trunfo colossal de manobra tática sub-base orgânico estruturante da geometria matemática. Formulada brilhantemente no sub-eixo e na focado nas abstrações por Jean le Rond d'Alembert, ela permite amputar cirurgicamente a EDO e o seu esqueleto e de de a e da base orgânica do de a focado numérico paramétrico a do de ordem direcional original paramétrica na forma do 2 focada matriz superior restrita, forçando sua torção e subordinação para os e de no do na a dos numéricos de um do nível amigável estrutural amigável purificador no da dócil orgânico contínuo da e matriz rebaixado estruturada orgânico restritivo orgânico no e 1. A premissa impõe que a engrenagem secundária desconhecida matriz orgânica contínua alocada oculta flutuante analítica referencial temporal de e subjacente estanque formadora da e $y_2$ nascerá da simbiose restritiva mutante subordinativa derivada de multiplicadora flutuante base numérico atrelada de translação e vetorial de restrição orgânica contínua abstrata deformadora focada temporal formatada $u(x)$ contra o hospedeiro estático funcional do a do base primária focada estanque original atrelado e de constante puro de referenciamento orgânico $y_1$.",
+            exata_question: {
+                title: "A equação está no formato exato?",
+                badge: "teste de exatidão",
+                condition: "$$M(x,y)dx+N(x,y)dy=0$$",
+                concept: "Uma EDO escrita nessa forma pode ser exata se existir uma função potencial $F(x,y)$ tal que $dF=Mdx+Ndy$. O teste clássico é comparar as derivadas cruzadas.",
                 steps: [
-                    "<strong>No Domínio Assustador da Orfandade do Corpo da Geometria do de e da Função da do Eixo Base Principal Isolada do do do Mutilada Subjacente Alocada do Modelo Numérico Cego em $y$:</strong>\n<strong>1. A Prótese Funcional Analítica Geométrica Operante Derivada Uníssona e Focada do Referenciamento Simétrico Paramétrico Contínuo e Vetorial Orgânico Paramétrico Abstrato Funcional:</strong> Crie um vetor matriz do e do na a do e de a artificial orgânico mutante puramente focada no abismo em $u$ injetando ele no fantasma derivado purificador matriz focado alocado e numérico derivado atrelado na formulação da de das forma da e formatada matriz atrelada subordinada no e em função da primeira ordem focado paramétrico do na a derivada estanque orgânica primária purificador $y'$. Como desdobramento lógico incontestável purificado contínuo, a segunda derivada sofrerá decaimento para de o estado primitivo focado paramétrico numérico orgânico primitivo unificado de do a matriz temporal de aceleração derivativa simples do e natural na forma estanque pura $u'$.\n\n<strong>2. A Extração e Limpeza da Mutilação Derivativa Operacional Conjunta Alocada:</strong> Insira na fornalha do no abismo do do e os termos novos na e focado nos confins atrelados no e da EDO base. Como prometido, o grau decai magicamente e a engrenagem se curva para as regras da primeira ordem no mundo linear ou separável em função subordinativa paramétrica focada no domínio restritivo no e em orgânico contínuo alocada atrelada numérico a atrelada a matriz atrelada $u$.\n\n<strong>3. Regeneração Paramétrica Simétrica Final Ascendente do Contínuo Unificado Rebaixado do Oculto do Vetorial Numérico Parametrizada:</strong> Ache o formato puro atrelado referencial contínuo de forma da função original da do da de $u(x)$. Uma vez purificada, re-execute o fecho da inversão orgânica atrelada base temporal integrando ela perfeitamente em toda a integridade no plano de e da e focado na eixo focado atrelada da do e da de o referenciada orgânico integral contínua $x$ para restaurar e dar novamente vida atrelada na de e da do da nativa $y$ (afinal, se o no e da da no $y'$ era do e o a e focado na $u$, então integrando da o na e de de no no se do e se acha da do no de e o $y$).",
-                    "<strong>No Oásis do Favor Paramétrico Orgânico Unificado da Piedade Funcional Numérica do Professor com a Chave no Mestre Focada Alocada Orgânica de $y_1$:</strong>\n<strong>1. Padronização e Limpeza Total do Fator Restritivo da Frente da Derivação Unificada Oculta Alocada Contínua e Vetorial Derivada da Matriz Superior da Alta e Focada Acoplada Temporal Base Paramétrica na Ordem de Translação $y''$:</strong> Expurgue a malha purificando todos e os termos focados de referencial e que habitam a de da focado do e multiplicam a aceleração na orgânica focada na segunda de derivada $y''$. Se estiver colado lá do o e orgânica da o fator $x^2$, divida a questão do de pela e por toda as e de ele em toda a de malha da EDO original no na matriz de paramétrica.\n\n<strong>2. O Rito da Extração Analítica Formulada e Paramétrica da Referência Identitária Geográfica Matriz Direcional Orgânica Simétrica:</strong> Extraia da equação agora dócil de da de o na e de a matriz do valor do $P(x)$ (o acompanhante de colado de do de do no $y'$).\n\n<strong>3. O Aplique Tático e Bélico Mestre e o Disparo Matemático do Fator da e Focado da Fórmula Magna Empacotada Integral Pronta Universal Infalível d'Alembertiana do Algoritmo Mágico:</strong> Feche a questão cravando a de de a de da a matriz a da na sua forma integral na de numérico focada formula de numérico numérico atrelada prontas da integral e da das subordinação orgânicas integral:\n$$y_2 = y_1 \\int \\frac{e^{-\\int P(x)dx}}{y_1^2} dx$$"
+                    "<strong>1.</strong> Identifique $M(x,y)$ e $N(x,y)$.",
+                    "<strong>2.</strong> Calcule $\partial M/\partial y$.",
+                    "<strong>3.</strong> Calcule $\partial N/\partial x$.",
+                    "<strong>4.</strong> Se forem iguais, a EDO é exata.",
+                    "<strong>5.</strong> Se não forem, talvez exista fator integrante especial."
                 ],
                 tips: [
-                    "A presença implacável de duas esferas na da a e no de numérico integração temporal na rota de de e do da focada da solução não é defeito, mas base focado na providência de da geométrica orgânica da matemática para e de a no para parir de o das da de a o e da gerar organicamente a sub-vida das e das das da forma de as formatações das vitais e das vitais contínuo a de de nas duas originais constantes fundamentais numéricas a do as do $C_1$ e atrelada e de a no das da no nas a $C_2$ da geometria exigida de 2ª ordem unificada focado numérico paramétrica transversal e orgânica atrelada base contínuo abstrata direcional focada e temporal."
+                    "O formato diferencial precisa estar correto antes do teste.",
+                    "Às vezes basta multiplicar a equação por uma função simples de $x$ ou de $y$."
                 ],
-                example: "Dada a EDO de um oscilador base sem amortecedor original: $y'' - y = 0$. E sabendo-se de forma empírica analítica que $y_1 = e^x$.\n\nAplicaremos a letal de a e de da de do e da o a matriz da fórmula de redução na e de focada pronta mágica empacotada da da a da de numérico a da a da de d'Alembert.\nNotamos e a da que a de $P(x)$ é vazio e nulo na a e focado da de na o de da orgânica EDO nulo em no de paramétrica original ($y'$ não existe, logo é do de o 0).\n\n$$y_2 = e^x \\int \\frac{e^{-\\int 0 dx}}{(e^x)^2} dx$$\n$$y_2 = e^x \\int \\frac{1}{e^{2x}} dx = e^x \\int e^{-2x} dx$$\n$$y_2 = e^x \\left( -\\frac{1}{2} e^{-2x} \\right) = -\\frac{1}{2} e^{-x}$$\n\nComo constantes são engolidas na linearidade orgânica contínua final paramétrico, a base da a a da do e a forma do núcleo orgânico base real paramétrico focada de sub-dependência na a $y_2$ do a da a de do de e de orgânico a o a e do é o formidável a da o de e o a as $e^{-x}$."
+                example: "$$ (2xy+\cos x)dx+(x^2+e^y)dy=0 $$"
+            },
+            exata: {
+                title: "Equação Exata",
+                badge: "1ª ordem",
+                condition: "$$\frac{\partial M}{\partial y}=\frac{\partial N}{\partial x}$$",
+                concept: "Se a equação é exata, então existe uma função potencial $F(x,y)$ cuja diferencial total é a própria EDO. Resolver passa a significar reconstruir $F(x,y)$.",
+                steps: [
+                    "<strong>1.</strong> Confirme a exatidão por $M_y=N_x$.",
+                    "<strong>2.</strong> Integre $M$ em relação a $x$: $F(x,y)=\int M\,dx+h(y)$.",
+                    "<strong>3.</strong> Derive $F$ em relação a $y$.",
+                    "<strong>4.</strong> Iguale o resultado a $N(x,y)$ para achar $h'(y)$.",
+                    "<strong>5.</strong> Integre $h'(y)$.",
+                    "<strong>6.</strong> Escreva $F(x,y)=C$."
+                ],
+                tips: [
+                    "Ao integrar $M$ em relação a $x$, trate $y$ como constante.",
+                    "No final a solução costuma aparecer de forma implícita."
+                ],
+                example: "$$ (2xy+\cos x)dx+(x^2+e^y)dy=0 $$\n$$M_y=2x,\quad N_x=2x$$\n$$F=\int(2xy+\cos x)dx=x^2y+\sin x+h(y)$$\n$$F_y=x^2+h'(y)=x^2+e^y$$\n$$h'(y)=e^y\Rightarrow h(y)=e^y$$\n$$x^2y+\sin x+e^y=C$$"
+            },
+            exata_fator: {
+                title: "Fator Integrante para Forçar Exatidão",
+                badge: "correção estrutural",
+                condition: "A EDO não é exata, mas admite um fator integrante simples",
+                concept: "Quando $M_y\neq N_x$, ainda pode existir uma função multiplicadora $\mu(x)$ ou $\mu(y)$ que transforme a equação em exata. Em cursos básicos, os testes mais comuns procuram dependência só de $x$ ou só de $y$.",
+                steps: [
+                    "<strong>1.</strong> Calcule $\dfrac{M_y-N_x}{N}$. Se depender apenas de $x$, tente $\mu(x)=e^{\int f(x)dx}$.",
+                    "<strong>2.</strong> Calcule $\dfrac{N_x-M_y}{M}$. Se depender apenas de $y$, tente $\mu(y)=e^{\int g(y)dy}$.",
+                    "<strong>3.</strong> Multiplique a EDO por $\mu$.",
+                    "<strong>4.</strong> Refaça o teste de exatidão.",
+                    "<strong>5.</strong> Resolva como equação exata."
+                ],
+                tips: [
+                    "Nem toda EDO não exata admite um fator integrante simples.",
+                    "Se os testes falharem, pode ser necessário outro método ou uma substituição."
+                ],
+                example: "Se $$\frac{M_y-N_x}{N}=f(x),$$ então $$\mu(x)=e^{\int f(x)dx}.$$"
+            },
+            bernoulli: {
+                title: "Equação de Bernoulli",
+                badge: "não linear redutível",
+                condition: "$$y'+P(x)y=Q(x)y^n,\quad n\neq 0,1$$",
+                concept: "A equação de Bernoulli parece não linear, mas vira linear após a substituição certa. O truque é usar $v=y^{1-n}$.",
+                steps: [
+                    "<strong>1.</strong> Coloque no formato $y'+P(x)y=Q(x)y^n$.",
+                    "<strong>2.</strong> Divida por $y^n$ para preparar a substituição.",
+                    "<strong>3.</strong> Defina $v=y^{1-n}$.",
+                    "<strong>4.</strong> Reescreva a EDO em termos de $v$; ela se torna linear.",
+                    "<strong>5.</strong> Resolva por fator integrante.",
+                    "<strong>6.</strong> Volte para $y$."
+                ],
+                tips: [
+                    "Se $n=0$ ou $n=1$, a equação já é linear e não precisa da substituição de Bernoulli.",
+                    "O erro mais comum é esquecer a derivada de $v=y^{1-n}$."
+                ],
+                example: "$$y'+y=xy^2$$\nDividindo por $y^2$:\n$$\frac{y'}{y^2}+\frac{1}{y}=x$$\nUse $v=y^{-1}$, então $v'=-y'/y^2$."
+            },
+            homogenea1: {
+                title: "EDO Homogênea de 1ª Ordem",
+                badge: "substituição padrão",
+                condition: "$$y'=F\!\left(\frac{y}{x}\right)$$",
+                concept: "Aqui 'homogênea' significa que o lado direito depende apenas da razão $y/x$, ou que $M$ e $N$ são homogêneas do mesmo grau. A substituição padrão é $y=vx$.",
+                steps: [
+                    "<strong>1.</strong> Verifique se a equação depende apenas de $y/x$.",
+                    "<strong>2.</strong> Faça $y=vx$.",
+                    "<strong>3.</strong> Derive: $y'=v+xv'$.",
+                    "<strong>4.</strong> Substitua na EDO.",
+                    "<strong>5.</strong> Resolva a EDO resultante em $v$; geralmente ela fica separável.",
+                    "<strong>6.</strong> Volte com $v=y/x$."
+                ],
+                tips: [
+                    "Não confunda com EDO linear homogênea de 2ª ordem.",
+                    "A substituição só funciona quando a razão $y/x$ realmente domina a equação."
+                ],
+                example: "$$y'=1+\frac{y}{x}$$\nFaça $y=vx$, então $y'=v+xv'$.\nLogo $$v+xv'=1+v\Rightarrow xv'=1.$$"
+            },
+            riccati: {
+                title: "Equação de Riccati",
+                badge: "caso especial",
+                condition: "$$y'=a(x)y^2+b(x)y+c(x)$$",
+                concept: "A equação de Riccati é não linear por causa do termo $y^2$. Se uma solução particular $y_p$ for conhecida, a substituição $y=y_p+1/u$ reduz o problema a uma equação linear para $u$.",
+                steps: [
+                    "<strong>1.</strong> Identifique o formato quadrático em $y$.",
+                    "<strong>2.</strong> Procure uma solução particular $y_p$ simples.",
+                    "<strong>3.</strong> Faça $y=y_p+1/u$.",
+                    "<strong>4.</strong> Substitua e simplifique.",
+                    "<strong>5.</strong> Resolva a EDO linear obtida para $u$.",
+                    "<strong>6.</strong> Retorne a $y$."
+                ],
+                tips: [
+                    "Sem solução particular conhecida, Riccati costuma ser bem mais difícil.",
+                    "Muitos exercícios didáticos já dão ou sugerem uma solução particular."
+                ],
+                example: "$$y'=y^2-x y+1$$\nSe uma solução particular $y_p$ for conhecida, use $$y=y_p+\frac{1}{u}.$$"
+            },
+            ordem2: {
+                title: "EDOs de 2ª Ordem",
+                badge: "classificação",
+                condition: "A maior derivada presente é $y''$",
+                concept: "Em 2ª ordem, o caminho mais comum começa verificando se os coeficientes são constantes. Se forem, entram polinômio característico, coeficientes indeterminados e variação de parâmetros. Se não forem, pode surgir Cauchy-Euler, solução em séries ou técnicas especiais.",
+                steps: [
+                    "<strong>1.</strong> Coloque a equação em forma padrão.",
+                    "<strong>2.</strong> Veja se os coeficientes são constantes ou funções de $x$.",
+                    "<strong>3.</strong> Se for homogênea com coeficientes constantes, use a equação característica.",
+                    "<strong>4.</strong> Se não homogênea, escolha entre coeficientes indeterminados e variação de parâmetros.",
+                    "<strong>5.</strong> Se houver estrutura equidimensional, teste Cauchy-Euler."
+                ],
+                tips: [
+                    "A forma do termo forçante costuma indicar o método particular mais rápido.",
+                    "Se faltar $y$ ou faltar $y'$, a redução de ordem pode simplificar muito."
+                ],
+                example: "$$y''+4y'+4y=e^x$$"
+            },
+            coef_constantes: {
+                title: "Coeficientes constantes?",
+                badge: "triagem de 2ª ordem",
+                condition: "Ex.: $$ay''+by'+cy=g(x)$$ com $a,b,c$ constantes",
+                concept: "Se os coeficientes que multiplicam $y''$, $y'$ e $y$ são constantes numéricas, você entra na família clássica resolvida por polinômio característico e métodos padrão para a parte particular.",
+                steps: [
+                    "<strong>1.</strong> Confira se os coeficientes são números, não funções de $x$.",
+                    "<strong>2.</strong> Se o lado direito for zero, é homogênea.",
+                    "<strong>3.</strong> Se o lado direito for diferente de zero, é não homogênea.",
+                    "<strong>4.</strong> Escolha o método compatível com o tipo do termo forçante."
+                ],
+                tips: [
+                    "Coeficientes constantes não significam solução constante; significam apenas que o operador é invariável em $x$.",
+                    "Laplace também costuma funcionar muito bem aqui quando há condições iniciais."
+                ],
+                example: "$$y''-3y'+2y=e^{2x}$$"
+            },
+            homogenea_question: {
+                title: "A equação é homogênea ou não homogênea?",
+                badge: "ramificação",
+                condition: "Homogênea: lado direito igual a zero",
+                concept: "Depois de confirmar coeficientes constantes, o próximo passo é olhar o termo forçante. Se ele for zero, use apenas a parte homogênea. Se não for zero, será preciso encontrar uma solução particular e somá-la à homogênea.",
+                steps: [
+                    "<strong>1.</strong> Escreva a EDO como $ay''+by'+cy=g(x)$.",
+                    "<strong>2.</strong> Se $g(x)=0$, resolva a homogênea via equação característica.",
+                    "<strong>3.</strong> Se $g(x)\neq 0$, primeiro resolva a homogênea e depois ache uma particular.",
+                    "<strong>4.</strong> Some tudo: $y=y_h+y_p$."
+                ],
+                tips: [
+                    "Toda não homogênea precisa da homogênea como base.",
+                    "O formato de $g(x)$ influencia diretamente a escolha do método particular."
+                ],
+                example: "Homogênea: $$y''-5y'+6y=0$$\nNão homogênea: $$y''-5y'+6y=e^x$$"
+            },
+            homogenea: {
+                title: "2ª Ordem Homogênea com Coeficientes Constantes",
+                badge: "equação característica",
+                condition: "$$ay''+by'+cy=0$$",
+                concept: "O método padrão supõe solução exponencial $y=e^{rx}$. Isso leva ao polinômio característico $ar^2+br+c=0$. O tipo das raízes define o formato da solução.",
+                steps: [
+                    "<strong>1.</strong> Monte a equação característica $ar^2+br+c=0$.",
+                    "<strong>2.</strong> Resolva para obter as raízes $r$.",
+                    "<strong>3.</strong> Se as raízes forem reais e distintas: $y=C_1e^{r_1x}+C_2e^{r_2x}$.",
+                    "<strong>4.</strong> Se forem reais e iguais: $y=(C_1+C_2x)e^{rx}$.",
+                    "<strong>5.</strong> Se forem complexas $\alpha\pm\beta i$: $y=e^{\alpha x}(C_1\cos\beta x+C_2\sin\beta x)$."
+                ],
+                tips: [
+                    "O caso de raiz repetida exige o fator extra $x$.",
+                    "Raízes complexas sempre aparecem em par conjugado."
+                ],
+                example: "$$y''-5y'+6y=0$$\n$$r^2-5r+6=0\Rightarrow (r-2)(r-3)=0$$\n$$y=C_1e^{2x}+C_2e^{3x}$$"
+            },
+            nao_homogenea: {
+                title: "2ª Ordem Não Homogênea",
+                badge: "particular + homogênea",
+                condition: "$$ay''+by'+cy=g(x),\quad g(x)\neq 0$$",
+                concept: "A solução geral é a soma da parte homogênea com uma solução particular: $y=y_h+y_p$. O desafio é escolher o método certo para encontrar $y_p$.",
+                steps: [
+                    "<strong>1.</strong> Resolva a homogênea associada $ay''+by'+cy=0$.",
+                    "<strong>2.</strong> Analise o formato de $g(x)$.",
+                    "<strong>3.</strong> Se $g(x)$ for polinômio, exponencial, seno/cosseno ou combinação deles, tente coeficientes indeterminados.",
+                    "<strong>4.</strong> Se o termo forçante for mais geral, use variação de parâmetros.",
+                    "<strong>5.</strong> Some $y_h+y_p$."
+                ],
+                tips: [
+                    "Se o chute de coeficientes indeterminados coincidir com $y_h$, multiplique por $x$ até ficar independente.",
+                    "Variação de parâmetros é mais universal, mas costuma dar integrais mais pesadas."
+                ],
+                example: "$$y''-3y'+2y=e^x$$"
+            },
+            coef_indeterminados: {
+                title: "Coeficientes Indeterminados",
+                badge: "particular rápida",
+                condition: "Termo forçante do tipo polinômio, exponencial, seno/cosseno ou combinações",
+                concept: "O método consiste em chutar a forma de $y_p$ baseada em $g(x)$, substituir na EDO e determinar os coeficientes desconhecidos.",
+                steps: [
+                    "<strong>1.</strong> Resolva a homogênea e guarde $y_h$.",
+                    "<strong>2.</strong> Chute $y_p$ com a mesma família de funções de $g(x)$.",
+                    "<strong>3.</strong> Se o chute repetir termo de $y_h$, multiplique por $x$.",
+                    "<strong>4.</strong> Substitua na EDO.",
+                    "<strong>5.</strong> Compare coeficientes para achar as constantes do chute."
+                ],
+                tips: [
+                    "É rápido, mas não serve para qualquer $g(x)$.",
+                    "Muito usado em provas por economizar integrais."
+                ],
+                example: "$$y''-3y'+2y=e^x$$\nHomogênea: $$y_h=C_1e^x+C_2e^{2x}$$\nComo $e^x$ já está em $y_h$, tente $$y_p=Ax e^x.$$"
+            },
+            var_parametros: {
+                title: "Variação de Parâmetros",
+                badge: "método geral",
+                condition: "EDO linear de 2ª ordem com solução homogênea conhecida",
+                concept: "Em vez de constantes fixas na solução homogênea, o método troca essas constantes por funções. É mais geral do que coeficientes indeterminados.",
+                steps: [
+                    "<strong>1.</strong> Resolva a homogênea e ache duas soluções independentes $y_1$ e $y_2$.",
+                    "<strong>2.</strong> Coloque a EDO em forma padrão: $y''+P(x)y'+Q(x)y=G(x)$.",
+                    "<strong>3.</strong> Calcule o wronskiano $W=y_1y_2'-y_1'y_2$.",
+                    "<strong>4.</strong> Use $$u_1'=-\frac{y_2G}{W},\qquad u_2'=\frac{y_1G}{W}.$$",
+                    "<strong>5.</strong> Integre para achar $u_1$ e $u_2$.",
+                    "<strong>6.</strong> Monte $$y_p=u_1y_1+u_2y_2.$$"
+                ],
+                tips: [
+                    "Funciona em muitos casos onde coeficientes indeterminados falha.",
+                    "O custo costuma ser o trabalho algébrico e as integrais."
+                ],
+                example: "Se $$y_1=e^x,\; y_2=e^{-x},$$ então $$W=-2.$$"
+            },
+            coef_variaveis: {
+                title: "Coeficientes Variáveis",
+                badge: "2ª ordem avançada",
+                condition: "Os coeficientes de $y''$, $y'$ e $y$ dependem de $x$",
+                concept: "Quando os coeficientes variam com $x$, o método das exponenciais geralmente deixa de funcionar. Aí entram classes especiais, como Cauchy-Euler, ou métodos por séries de potências.",
+                steps: [
+                    "<strong>1.</strong> Veja se há padrão equidimensional $x^2y''+axy'+by=\cdots$.",
+                    "<strong>2.</strong> Se houver, teste Cauchy-Euler.",
+                    "<strong>3.</strong> Se não houver estrutura especial, considere séries de potências.",
+                    "<strong>4.</strong> Perto de pontos singulares, métodos como Frobenius podem aparecer."
+                ],
+                tips: [
+                    "Coeficientes variáveis aparecem muito em física matemática.",
+                    "Nem sempre existe solução elementar fechada."
+                ],
+                example: "$$x^2y''-3xy'+4y=0$$"
+            },
+            cauchy_euler: {
+                title: "Equação de Cauchy-Euler",
+                badge: "equidimensional",
+                condition: "$$x^2y''+axy'+by=0$$",
+                concept: "Essa classe é especial porque as potências de $x$ acompanham a ordem das derivadas. O chute natural é $y=x^m$.",
+                steps: [
+                    "<strong>1.</strong> Verifique o padrão $x^2y''+axy'+by=0$.",
+                    "<strong>2.</strong> Suponha $y=x^m$.",
+                    "<strong>3.</strong> Substitua na EDO.",
+                    "<strong>4.</strong> Obtenha a equação indicial: $m(m-1)+am+b=0$.",
+                    "<strong>5.</strong> Resolva como no caso de coeficientes constantes, mas com base em $x^m$."
+                ],
+                tips: [
+                    "Se a raiz for dupla, aparece um termo com $\ln x$.",
+                    "Para raízes complexas, surgem expressões com $\cos(\beta\ln x)$ e $\sin(\beta\ln x)$."
+                ],
+                example: "$$x^2y''-3xy'+4y=0$$\nChute: $$y=x^m$$\n$$m(m-1)-3m+4=0\Rightarrow m^2-4m+4=0$$\n$$m=2$$ (raiz dupla)\n$$y=x^2(C_1+C_2\ln x)$$"
+            },
+            series: {
+                title: "Soluções em Séries de Potências",
+                badge: "recurso geral",
+                condition: "Quando a EDO não encaixa em classes fechadas simples",
+                concept: "A ideia é supor uma solução do tipo $y=\sum_{n=0}^{\infty}c_nx^n$, derivar termo a termo e substituir na equação. Depois, igualam-se coeficientes para obter relações de recorrência.",
+                steps: [
+                    "<strong>1.</strong> Suponha $$y=\sum_{n=0}^{\infty} c_nx^n.$$",
+                    "<strong>2.</strong> Calcule $y'$ e $y''$ em série.",
+                    "<strong>3.</strong> Substitua tudo na EDO.",
+                    "<strong>4.</strong> Ajuste os índices para escrever tudo na mesma potência de $x$.",
+                    "<strong>5.</strong> Iguale coeficientes e obtenha a recorrência.",
+                    "<strong>6.</strong> Gere os coeficientes a partir dos valores livres iniciais."
+                ],
+                tips: [
+                    "Muito útil para Airy, Bessel, Legendre e problemas sem solução elementar simples.",
+                    "O ponto em torno do qual você expande importa bastante."
+                ],
+                example: "Para $$y''-xy=0$$, use $$y=\sum_{n=0}^{\infty}c_nx^n$$ e obtenha uma relação entre $c_{n+2}$ e $c_{n-1}$."
+            },
+            reducao_ordem: {
+                title: "Redução de Ordem",
+                badge: "atalho estratégico",
+                condition: "Use quando faltar $y$ ou $y'$, ou quando uma solução $y_1$ já é conhecida",
+                concept: "Há dois cenários clássicos. Se a EDO não contém explicitamente $y$ ou não contém $x$, uma substituição em derivadas reduz a ordem. Em equações lineares homogêneas de 2ª ordem, se uma solução $y_1$ é conhecida, é possível encontrar uma segunda solução $y_2$.",
+                steps: [
+                    "<strong>Caso 1:</strong> Se faltar $y$, faça $u=y'$ e reduza para 1ª ordem.",
+                    "<strong>Caso 2:</strong> Se faltar $x$, use $y'=p(y)$ e trabalhe com cadeia.",
+                    "<strong>Caso 3:</strong> Se $y_1$ é conhecida em $$y''+P(x)y'+Q(x)y=0,$$ use $$y_2=y_1\int\frac{e^{-\int P(x)dx}}{y_1^2}\,dx.$$"
+                ],
+                tips: [
+                    "Na fórmula de $y_2$, a EDO precisa estar na forma padrão com coeficiente 1 em $y''$.",
+                    "Ao final, a solução geral fica $y=C_1y_1+C_2y_2$."
+                ],
+                example: "Para $$y''-y=0$$ com $$y_1=e^x$$, temos $$P(x)=0$$ e\n$$y_2=e^x\int\frac{1}{e^{2x}}dx=e^x\int e^{-2x}dx\propto e^{-x}.$$"
             }
         };
 
@@ -720,33 +867,43 @@
         const cheatModal = document.getElementById('cheat-modal');
         const cheatContentBox = document.getElementById('cheat-content-box');
         const slider = document.getElementById('flowchart-container');
-        let isDown = false, startX, scrollLeft;
+        let isDown = false, startX = 0, scrollLeft = 0;
 
         slider.addEventListener('mousedown', (e) => {
-            isDown = true; slider.classList.add('active');
-            startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft;
+            isDown = true;
+            slider.classList.add('active');
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
         });
         slider.addEventListener('mouseleave', () => { isDown = false; slider.classList.remove('active'); });
         slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active'); });
         slider.addEventListener('mousemove', (e) => {
-            if (!isDown) return; e.preventDefault();
+            if (!isDown) return;
+            e.preventDefault();
             slider.scrollLeft = scrollLeft - ((e.pageX - slider.offsetLeft) - startX) * 2;
         });
 
-        function showModal(nodeId, element) {
-            if(event) event.preventDefault();
+        function renderMath(target) {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetClear && MathJax.typesetClear([target]);
+                MathJax.typesetPromise([target]).catch((err) => console.log('MathJax error:', err));
+            }
+        }
+
+        function showModal(evt, nodeId, element) {
+            if (evt) evt.preventDefault();
             const data = edoData[nodeId];
-            if(!data) return;
+            if (!data) return;
 
             document.querySelectorAll('.tree a').forEach(el => el.classList.remove('active'));
-            if(element) element.classList.add('active');
+            if (element) element.classList.add('active');
 
             document.getElementById('modal-title').innerHTML = data.title;
             document.getElementById('modal-badge').innerHTML = data.badge;
             document.getElementById('modal-condition').innerHTML = data.condition;
-            
+
             const conceptContainer = document.getElementById('concept-container');
-            if(data.concept) {
+            if (data.concept) {
                 conceptContainer.style.display = 'block';
                 document.getElementById('modal-concept').innerHTML = data.concept;
             } else {
@@ -755,9 +912,9 @@
 
             const stepsContainer = document.getElementById('modal-steps');
             stepsContainer.innerHTML = '';
-            data.steps.forEach(step => {
+            (data.steps || []).forEach(step => {
                 const div = document.createElement('div');
-                div.className = "p-4 bg-slate-50 rounded-lg border border-slate-200 text-slate-700 font-medium";
+                div.className = 'p-4 bg-slate-50 rounded-lg border border-slate-200 text-slate-700 font-medium';
                 div.innerHTML = step;
                 stepsContainer.appendChild(div);
             });
@@ -768,21 +925,27 @@
             if (data.tips && data.tips.length > 0) {
                 tipsContainer.style.display = 'block';
                 data.tips.forEach(tip => {
-                    const li = document.createElement('li'); li.innerHTML = tip; tipsList.appendChild(li);
+                    const li = document.createElement('li');
+                    li.innerHTML = tip;
+                    tipsList.appendChild(li);
                 });
-            } else { tipsContainer.style.display = 'none'; }
+            } else {
+                tipsContainer.style.display = 'none';
+            }
 
             const exampleBlock = document.getElementById('modal-example');
             if (data.example) {
                 exampleBlock.parentElement.parentElement.style.display = 'block';
                 exampleBlock.innerHTML = data.example.replace(/\n/g, '<br>');
-            } else { exampleBlock.parentElement.parentElement.style.display = 'none'; }
+            } else {
+                exampleBlock.parentElement.parentElement.style.display = 'none';
+            }
 
             modal.classList.remove('invisible');
             requestAnimationFrame(() => {
                 modal.classList.add('modal-enter');
                 modalContentBox.classList.add('modal-content-enter');
-                if (window.MathJax) MathJax.typesetPromise([modal]).catch((err) => console.log('MathJax error: ', err));
+                renderMath(modal);
             });
         }
 
@@ -798,7 +961,7 @@
             requestAnimationFrame(() => {
                 cheatModal.classList.add('modal-enter');
                 cheatContentBox.classList.add('modal-content-enter');
-                if (window.MathJax) MathJax.typesetPromise([cheatModal]).catch((err) => console.log('MathJax error: ', err));
+                renderMath(cheatModal);
             });
         }
 
@@ -809,14 +972,14 @@
         }
 
         function switchTab(tabId) {
-            // Remove active classes
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active-tab'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active-content'));
-            
-            // Add active classes to targeted elements
             document.getElementById('btn-' + tabId).classList.add('active-tab');
             document.getElementById(tabId).classList.add('active-content');
+            renderMath(document.getElementById(tabId));
         }
+
+        renderMath(document.body);
     </script>
 </body>
 </html>
