@@ -19,27 +19,38 @@
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        .tree ul { padding-top: 24px; position: relative; display: flex; justify-content: center; }
+        :root {
+            --line-color: #cbd5e1;
+            --card-radius: 14px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body { overscroll-behavior: none; }
+
+        .tree ul { padding-top: 24px; position: relative; display: flex; justify-content: center; gap: 4px; }
         .tree li { float: left; text-align: center; list-style-type: none; position: relative; padding: 24px 6px 0 6px; }
         .tree li::before, .tree li::after {
-            content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #cbd5e1; width: 50%; height: 24px;
+            content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid var(--line-color); width: 50%; height: 24px;
         }
-        .tree li::after { right: auto; left: 50%; border-left: 2px solid #cbd5e1; }
+        .tree li::after { right: auto; left: 50%; border-left: 2px solid var(--line-color); }
         .tree li:only-child::after, .tree li:only-child::before { display: none; }
         .tree li:only-child { padding-top: 0; }
         .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
-        .tree li:last-child::before { border-right: 2px solid #cbd5e1; border-radius: 0 10px 0 0; }
+        .tree li:last-child::before { border-right: 2px solid var(--line-color); border-radius: 0 10px 0 0; }
         .tree li:first-child::after { border-radius: 10px 0 0 0; }
-        .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #cbd5e1; width: 0; height: 24px; }
+        .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid var(--line-color); width: 0; height: 24px; }
 
         .tree li a {
             border: 1px solid #e2e8f0; padding: 12px 14px; text-decoration: none; color: #334155;
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-size: 13.5px; font-weight: 600; display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
-            border-radius: 14px; background: #ffffff; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05); min-width: 140px; white-space: nowrap;
-            position: relative; overflow: hidden;
+            border-radius: var(--card-radius); background: #ffffff; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05); min-width: 128px; max-width: 180px;
+            white-space: normal; text-align: center; line-height: 1.22; position: relative; overflow: hidden; word-break: break-word;
         }
+        .tree li a span { white-space: normal; line-height: 1.25; }
+        .tree li a small { white-space: normal; }
         .tree li a::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #94a3b8; transition: background 0.2s; }
         .tree li a:hover, .tree li a.active { background: #f8fafc; transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); border-color: #cbd5e1; }
         .tree li a:hover::before, .tree li a.active::before { background: #3b82f6; }
@@ -70,10 +81,120 @@
         .tab-btn.active-tab { border-bottom: 3px solid #4f46e5; color: #4f46e5; font-weight: 700; background-color: #e0e7ff; }
         .tab-content { display: none; }
         .tab-content.active-content { display: block; }
+
+        .mindmap-shell {
+            display: inline-block;
+            min-width: max-content;
+        }
+
+        .formula-scroll, .table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #flowchart-container {
+            scroll-behavior: smooth;
+            touch-action: pan-x pan-y;
+            background:
+                radial-gradient(circle at top right, rgba(59,130,246,.08), transparent 24%),
+                radial-gradient(circle at left 20%, rgba(99,102,241,.08), transparent 20%);
+        }
+
+        #flowchart-container::after {
+            content: 'Arraste para navegar • toque nos cards';
+            position: sticky;
+            left: 12px;
+            bottom: 12px;
+            display: inline-flex;
+            width: fit-content;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.8);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .02em;
+            backdrop-filter: blur(6px);
+            z-index: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .tree ul { padding-top: 20px; gap: 2px; }
+            .tree li { padding: 20px 4px 0 4px; }
+            .tree li::before, .tree li::after, .tree ul ul::before { height: 20px; }
+            .tree li a {
+                min-width: 118px;
+                max-width: 160px;
+                font-size: 12.5px;
+                padding: 10px 12px;
+                border-radius: 12px;
+            }
+            .tree li a .icon { font-size: 17px; margin-bottom: 5px; }
+        }
+
+        @media (max-width: 768px) {
+            body { height: 100dvh; }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            header > div:last-child {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+            }
+            #flowchart-container {
+                padding: 12px;
+            }
+            #flowchart-container::after {
+                font-size: 10px;
+                bottom: 10px;
+                left: 10px;
+            }
+            .tree ul { padding-top: 16px; gap: 1px; }
+            .tree li { padding: 16px 3px 0 3px; }
+            .tree li::before, .tree li::after, .tree ul ul::before { height: 16px; }
+            .tree li a {
+                min-width: 104px;
+                max-width: 132px;
+                font-size: 11.5px;
+                padding: 9px 9px;
+                border-radius: 11px;
+                box-shadow: 0 3px 8px -2px rgb(0 0 0 / 0.08);
+            }
+            .tree li a .icon { font-size: 15px; margin-bottom: 4px; }
+            .tree li a span { font-size: 9px !important; margin-top: 4px; }
+            #modal-content-box, #cheat-content-box {
+                max-height: 96dvh;
+                border-radius: 18px;
+            }
+            #modal-title {
+                font-size: 1.5rem;
+                line-height: 1.15;
+            }
+            #modal-condition {
+                font-size: 1.4rem;
+                word-break: break-word;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tree li a {
+                min-width: 92px;
+                max-width: 116px;
+                font-size: 11px;
+                padding: 8px 8px;
+                border-radius: 10px;
+            }
+            .tree li a span { font-size: 8.5px !important; }
+            .tree li a .icon { font-size: 14px; }
+        }
+
     </style>
 </head>
 <body class="bg-slate-100 h-screen overflow-hidden flex flex-col font-sans">
-    <header class="bg-white shadow-sm border-b border-slate-200 py-3 px-4 md:px-8 flex justify-between items-center shrink-0 z-10">
+    <header class="bg-white/95 backdrop-blur shadow-sm border-b border-slate-200 py-3 px-4 md:px-8 flex justify-between items-center shrink-0 z-10">
         <div>
             <h1 class="text-xl md:text-2xl font-bold text-slate-800"><i class="fa-solid fa-map-location-dot text-blue-600 mr-2"></i>Mapa Mental de EDOs</h1>
             <p class="text-xs md:text-sm text-slate-500">Fluxograma interativo com métodos de 1ª ordem, 2ª ordem, sistemas e Laplace</p>
@@ -85,8 +206,9 @@
         </div>
     </header>
 
-    <main class="flex-1 overflow-auto custom-scrollbar p-6 md:p-12 cursor-grab active:cursor-grabbing" id="flowchart-container">
-        <div class="tree inline-block min-w-max pb-32 px-10">
+    <main class="flex-1 overflow-auto custom-scrollbar p-4 md:p-12 cursor-grab active:cursor-grabbing" id="flowchart-container">
+        <div class="mindmap-shell pb-24 px-2 md:px-8">
+        <div class="tree inline-block min-w-max pb-8 md:pb-16 px-2 md:px-4">
             <ul>
                 <li>
                     <a href="#" onclick="showModal(event, 'start', this)">
@@ -265,6 +387,7 @@
                 </li>
             </ul>
         </div>
+        </div>
     </main>
 
     <div id="method-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 opacity-0 invisible transition-all duration-300">
@@ -313,7 +436,7 @@
                     <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-5 flex items-center">
                         <i class="fa-solid fa-bolt mr-2 text-blue-500"></i>Exemplo Prático
                     </h3>
-                    <div class="bg-[#0f172a] rounded-xl p-6 shadow-inner overflow-x-auto custom-scrollbar">
+                    <div class="bg-[#0f172a] rounded-xl p-4 md:p-6 shadow-inner overflow-x-auto custom-scrollbar formula-scroll">
                         <div id="modal-example" class="text-slate-100 font-mono text-[15px] leading-loose min-w-max"></div>
                     </div>
                 </div>
@@ -358,7 +481,7 @@
 
                 <div id="tab-laplace" class="tab-content space-y-4">
                     <p class="text-sm text-slate-500 mb-4 border-l-4 border-amber-400 pl-3">Transformadas diretas mais usadas.</p>
-                    <table class="min-w-full border-collapse border border-slate-300 rounded-lg overflow-hidden">
+                    <div class="table-scroll rounded-lg border border-slate-300 overflow-hidden"><table class="min-w-full border-collapse">
                         <thead class="bg-slate-100">
                             <tr>
                                 <th class="border border-slate-300 p-3 text-center text-sm font-bold text-slate-700">$f(t)$</th>
@@ -374,7 +497,7 @@
                             <tr><td class="border border-slate-200 p-3 text-center">$$y'(t)$$</td><td class="border border-slate-200 p-3 text-center">$$sY(s)-y(0)$$</td></tr>
                             <tr><td class="border border-slate-200 p-3 text-center">$$y''(t)$$</td><td class="border border-slate-200 p-3 text-center">$$s^2Y(s)-sy(0)-y'(0)$$</td></tr>
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
 
                 <div id="tab-trig" class="tab-content space-y-4">
@@ -393,472 +516,472 @@
     <script>
         const edoData = {
             start: {
-                title: "Classificação Principal",
-                badge: "diagnóstico inicial",
-                condition: "Identifique ordem, linearidade, coeficientes e condições iniciais",
-                concept: "Antes de resolver, classifique a equação. Isso determina o método correto. Em especial, verifique: ordem da maior derivada, se a equação é linear ou não, se os coeficientes são constantes, se há mais de uma variável dependente e se as condições iniciais estão dadas.",
+                title: String.raw`Classificação Principal`,
+                badge: String.raw`diagnóstico inicial`,
+                condition: String.raw`Identifique ordem, linearidade, coeficientes e condições iniciais`,
+                concept: String.raw`Antes de resolver, classifique a equação. Isso determina o método correto. Em especial, verifique: ordem da maior derivada, se a equação é linear ou não, se os coeficientes são constantes, se há mais de uma variável dependente e se as condições iniciais estão dadas.`,
                 steps: [
-                    "<strong>1.</strong> Ache a maior derivada presente: isso define a ordem.",
-                    "<strong>2.</strong> Veja se a incógnita e suas derivadas aparecem linearmente. Se sim, a EDO é linear.",
-                    "<strong>3.</strong> Procure formatos especiais: separável, exata, Bernoulli, homogênea de 1ª ordem, Cauchy-Euler etc.",
-                    "<strong>4.</strong> Se houver condições iniciais e coeficientes constantes, considere Laplace como atalho.",
-                    "<strong>5.</strong> Se houver várias funções acopladas, trate como sistema de EDOs."
+                    String.raw`<strong>1.</strong> Ache a maior derivada presente: isso define a ordem.`,
+                    String.raw`<strong>2.</strong> Veja se a incógnita e suas derivadas aparecem linearmente. Se sim, a EDO é linear.`,
+                    String.raw`<strong>3.</strong> Procure formatos especiais: separável, exata, Bernoulli, homogênea de 1ª ordem, Cauchy-Euler etc.`,
+                    String.raw`<strong>4.</strong> Se houver condições iniciais e coeficientes constantes, considere Laplace como atalho.`,
+                    String.raw`<strong>5.</strong> Se houver várias funções acopladas, trate como sistema de EDOs.`
                 ],
                 tips: [
-                    "<i class='fa-solid fa-triangle-exclamation text-rose-500'></i> Não confunda <strong>ordem</strong> com <strong>potência</strong> da derivada. Em $(y')^4+y=x$, a ordem continua sendo 1.",
-                    "Se aparecer derivada parcial, você já saiu do mundo das EDOs e entrou em EDPs."
+                    String.raw`<i class='fa-solid fa-triangle-exclamation text-rose-500'></i> Não confunda <strong>ordem</strong> com <strong>potência</strong> da derivada. Em $(y')^4+y=x$, a ordem continua sendo 1.`,
+                    String.raw`Se aparecer derivada parcial, você já saiu do mundo das EDOs e entrou em EDPs.`
                 ],
-                example: "Exemplos rápidos:\n$$y'+3xy=\sin x$$\n$$y''+4y'+4y=e^x$$\n$$\begin{cases}x'=2x-y\\y'=x+2y\end{cases}$$"
+                example: String.raw`Exemplos rápidos:\n$$y'+3xy=\sin x$$\n$$y''+4y'+4y=e^x$$\n$$\begin{cases}x'=2x-y\\y'=x+2y\end{cases}$$`
             },
             laplace: {
-                title: "Transformada de Laplace",
-                badge: "atalho poderoso",
-                condition: "EDO linear com coeficientes constantes e condições iniciais conhecidas",
-                concept: "A transformada de Laplace converte derivadas em expressões algébricas no domínio $s$. Por isso ela é excelente para problemas com condições iniciais, degraus, impulsos e forçamentos por funções conhecidas.",
+                title: String.raw`Transformada de Laplace`,
+                badge: String.raw`atalho poderoso`,
+                condition: String.raw`EDO linear com coeficientes constantes e condições iniciais conhecidas`,
+                concept: String.raw`A transformada de Laplace converte derivadas em expressões algébricas no domínio $s$. Por isso ela é excelente para problemas com condições iniciais, degraus, impulsos e forçamentos por funções conhecidas.`,
                 steps: [
-                    "<strong>1.</strong> Aplique $\mathcal{L}$ em ambos os lados da EDO.",
-                    "<strong>2.</strong> Troque as derivadas por $\mathcal{L}\{y'\}=sY(s)-y(0)$ e $\mathcal{L}\{y''\}=s^2Y(s)-sy(0)-y'(0)$.",
-                    "<strong>3.</strong> Substitua as condições iniciais.",
-                    "<strong>4.</strong> Isole $Y(s)$ algebricamente.",
-                    "<strong>5.</strong> Faça frações parciais, quando necessário.",
-                    "<strong>6.</strong> Aplique a transformada inversa para obter $y(t)$."
+                    String.raw`<strong>1.</strong> Aplique $\mathcal{L}$ em ambos os lados da EDO.`,
+                    String.raw`<strong>2.</strong> Troque as derivadas por $\mathcal{L}\{y'\}=sY(s)-y(0)$ e $\mathcal{L}\{y''\}=s^2Y(s)-sy(0)-y'(0)$.`,
+                    String.raw`<strong>3.</strong> Substitua as condições iniciais.`,
+                    String.raw`<strong>4.</strong> Isole $Y(s)$ algebricamente.`,
+                    String.raw`<strong>5.</strong> Faça frações parciais, quando necessário.`,
+                    String.raw`<strong>6.</strong> Aplique a transformada inversa para obter $y(t)$.`
                 ],
                 tips: [
-                    "Muito útil quando o lado direito é degrau de Heaviside, impulso de Dirac ou função por partes.",
-                    "Em muitos exercícios ela evita calcular separadamente $y_h$ e $y_p$."
+                    String.raw`Muito útil quando o lado direito é degrau de Heaviside, impulso de Dirac ou função por partes.`,
+                    String.raw`Em muitos exercícios ela evita calcular separadamente $y_h$ e $y_p$.`
                 ],
-                example: "$$y''+y=\sin t,\qquad y(0)=0,\; y'(0)=1$$\nAplicando Laplace:\n$$(s^2Y-1)+Y=\frac{1}{s^2+1}$$\n$$(s^2+1)Y=1+\frac{1}{s^2+1}$$\n$$Y=\frac{1}{s^2+1}+\frac{1}{(s^2+1)^2}$$"
+                example: String.raw`$$y''+y=\sin t,\qquad y(0)=0,\; y'(0)=1$$\nAplicando Laplace:\n$$(s^2Y-1)+Y=\frac{1}{s^2+1}$$\n$$(s^2+1)Y=1+\frac{1}{s^2+1}$$\n$$Y=\frac{1}{s^2+1}+\frac{1}{(s^2+1)^2}$$`
             },
             sistemas_question: {
-                title: "Há múltiplas variáveis dependentes?",
-                badge: "triagem de sistemas",
-                condition: "Ex.: $x'(t)$ depende de $x$ e $y$, e $y'(t)$ depende de $x$ e $y$",
-                concept: "Se o problema tem duas ou mais funções desconhecidas interagindo entre si, ele deve ser tratado como sistema. O passo natural é organizar tudo em forma vetorial ou matricial.",
+                title: String.raw`Há múltiplas variáveis dependentes?`,
+                badge: String.raw`triagem de sistemas`,
+                condition: String.raw`Ex.: $x'(t)$ depende de $x$ e $y$, e $y'(t)$ depende de $x$ e $y$`,
+                concept: String.raw`Se o problema tem duas ou mais funções desconhecidas interagindo entre si, ele deve ser tratado como sistema. O passo natural é organizar tudo em forma vetorial ou matricial.`,
                 steps: [
-                    "<strong>1.</strong> Reúna as incógnitas num vetor $\mathbf{X}(t)$.",
-                    "<strong>2.</strong> Escreva o sistema como $\mathbf{X}'=A\mathbf{X}+\mathbf{F}(t)$.",
-                    "<strong>3.</strong> Se $\mathbf{F}(t)=0$, o sistema é homogêneo.",
-                    "<strong>4.</strong> Para coeficientes constantes, autovalores e autovetores costumam ser o caminho principal."
+                    String.raw`<strong>1.</strong> Reúna as incógnitas num vetor $\mathbf{X}(t)$.`,
+                    String.raw`<strong>2.</strong> Escreva o sistema como $\mathbf{X}'=A\mathbf{X}+\mathbf{F}(t)$.`,
+                    String.raw`<strong>3.</strong> Se $\mathbf{F}(t)=0$, o sistema é homogêneo.`,
+                    String.raw`<strong>4.</strong> Para coeficientes constantes, autovalores e autovetores costumam ser o caminho principal.`
                 ],
                 tips: [
-                    "Às vezes uma EDO de 2ª ordem pode ser reescrita como sistema de 1ª ordem.",
-                    "Sistemas lineares homogêneos com matriz constante têm solução estruturada por exponenciais matriciais."
+                    String.raw`Às vezes uma EDO de 2ª ordem pode ser reescrita como sistema de 1ª ordem.`,
+                    String.raw`Sistemas lineares homogêneos com matriz constante têm solução estruturada por exponenciais matriciais.`
                 ],
-                example: "$$\begin{cases}x'=4x+y\\y'=-2x+y\end{cases}$$"
+                example: String.raw`$$\begin{cases}x'=4x+y\\y'=-2x+y\end{cases}$$`
             },
             sistemas: {
-                title: "Sistemas Matriciais",
-                badge: "método matricial",
-                condition: "$\mathbf{X}'=A\mathbf{X}$",
-                concept: "Quando o sistema é linear, homogêneo e com coeficientes constantes, a matriz $A$ controla toda a dinâmica. A solução nasce dos autovalores e autovetores de $A$.",
+                title: String.raw`Sistemas Matriciais`,
+                badge: String.raw`método matricial`,
+                condition: String.raw`$\mathbf{X}'=A\mathbf{X}$`,
+                concept: String.raw`Quando o sistema é linear, homogêneo e com coeficientes constantes, a matriz $A$ controla toda a dinâmica. A solução nasce dos autovalores e autovetores de $A$.`,
                 steps: [
-                    "<strong>1.</strong> Escreva o sistema na forma $\mathbf{X}'=A\mathbf{X}$.",
-                    "<strong>2.</strong> Resolva $\det(A-\lambda I)=0$ para achar os autovalores.",
-                    "<strong>3.</strong> Para cada autovalor, resolva $(A-\lambda I)\mathbf{v}=0$ para achar o autovetor.",
-                    "<strong>4.</strong> Monte a solução geral com combinações de $e^{\lambda t}\mathbf{v}$.",
-                    "<strong>5.</strong> Use condições iniciais para achar as constantes."
+                    String.raw`<strong>1.</strong> Escreva o sistema na forma $\mathbf{X}'=A\mathbf{X}$.`,
+                    String.raw`<strong>2.</strong> Resolva $\det(A-\lambda I)=0$ para achar os autovalores.`,
+                    String.raw`<strong>3.</strong> Para cada autovalor, resolva $(A-\lambda I)\mathbf{v}=0$ para achar o autovetor.`,
+                    String.raw`<strong>4.</strong> Monte a solução geral com combinações de $e^{\lambda t}\mathbf{v}$.`,
+                    String.raw`<strong>5.</strong> Use condições iniciais para achar as constantes.`
                 ],
                 tips: [
-                    "Autovalores negativos indicam decaimento; positivos indicam crescimento; complexos indicam oscilação/espiral.",
-                    "Se houver autovalor repetido, pode ser preciso um vetor generalizado."
+                    String.raw`Autovalores negativos indicam decaimento; positivos indicam crescimento; complexos indicam oscilação/espiral.`,
+                    String.raw`Se houver autovalor repetido, pode ser preciso um vetor generalizado.`
                 ],
-                example: "$$A=\begin{bmatrix}4&1\\-2&1\end{bmatrix}$$\n$$\det(A-\lambda I)=\lambda^2-5\lambda+6=0$$\nLogo, $\lambda_1=3$ e $\lambda_2=2$."
+                example: String.raw`$$A=\begin{bmatrix}4&1\\-2&1\end{bmatrix}$$\n$$\det(A-\lambda I)=\lambda^2-5\lambda+6=0$$\nLogo, $\lambda_1=3$ e $\lambda_2=2$.`
             },
             ordem1: {
-                title: "EDOs de 1ª Ordem",
-                badge: "classificação",
-                condition: "A maior derivada presente é $y'$",
-                concept: "Em 1ª ordem, a pergunta mais importante é: a equação é linear? Se não for, ainda pode cair em várias classes clássicas: separável, exata, Bernoulli, homogênea ou Riccati.",
+                title: String.raw`EDOs de 1ª Ordem`,
+                badge: String.raw`classificação`,
+                condition: String.raw`A maior derivada presente é $y'$`,
+                concept: String.raw`Em 1ª ordem, a pergunta mais importante é: a equação é linear? Se não for, ainda pode cair em várias classes clássicas: separável, exata, Bernoulli, homogênea ou Riccati.`,
                 steps: [
-                    "<strong>1.</strong> Tente escrever a equação como $y'=f(x,y)$.",
-                    "<strong>2.</strong> Verifique se ela pode ser escrita como $y'+P(x)y=Q(x)$.",
-                    "<strong>3.</strong> Se não for linear, teste separabilidade.",
-                    "<strong>4.</strong> Depois teste formato exato, Bernoulli, homogêneo ou Riccati."
+                    String.raw`<strong>1.</strong> Tente escrever a equação como $y'=f(x,y)$.`,
+                    String.raw`<strong>2.</strong> Verifique se ela pode ser escrita como $y'+P(x)y=Q(x)$.`,
+                    String.raw`<strong>3.</strong> Se não for linear, teste separabilidade.`,
+                    String.raw`<strong>4.</strong> Depois teste formato exato, Bernoulli, homogêneo ou Riccati.`
                 ],
                 tips: [
-                    "Muitas questões parecem não lineares no início, mas viram lineares após substituição.",
-                    "Sempre simplifique a álgebra antes de classificar."
+                    String.raw`Muitas questões parecem não lineares no início, mas viram lineares após substituição.`,
+                    String.raw`Sempre simplifique a álgebra antes de classificar.`
                 ],
-                example: "$$xy'+2y=4x^2\quad\Rightarrow\quad y'+\frac{2}{x}y=4x$$"
+                example: String.raw`$$xy'+2y=4x^2\quad\Rightarrow\quad y'+\frac{2}{x}y=4x$$`
             },
             linear_question: {
-                title: "A EDO de 1ª ordem é linear?",
-                badge: "teste de linearidade",
-                condition: "$y'+P(x)y=Q(x)$",
-                concept: "Uma EDO de 1ª ordem é linear quando $y$ e $y'$ aparecem apenas na primeira potência, sem produtos entre si e sem funções não lineares como $y^2$, $\sin y$, $e^y$, $(y')^2$ etc.",
+                title: String.raw`A EDO de 1ª ordem é linear?`,
+                badge: String.raw`teste de linearidade`,
+                condition: String.raw`$y'+P(x)y=Q(x)$`,
+                concept: String.raw`Uma EDO de 1ª ordem é linear quando $y$ e $y'$ aparecem apenas na primeira potência, sem produtos entre si e sem funções não lineares como $y^2$, $\sin y$, $e^y$, $(y')^2$ etc.`,
                 steps: [
-                    "<strong>1.</strong> Coloque tudo na forma $a_1(x)y'+a_0(x)y=g(x)$.",
-                    "<strong>2.</strong> Divida por $a_1(x)$, se necessário.",
-                    "<strong>3.</strong> Se aparecer só $y'+P(x)y=Q(x)$, use fator integrante.",
-                    "<strong>4.</strong> Se surgir $y^n$, produto $yy'$, $\ln y$, $e^y$ etc., ela não é linear."
+                    String.raw`<strong>1.</strong> Coloque tudo na forma $a_1(x)y'+a_0(x)y=g(x)$.`,
+                    String.raw`<strong>2.</strong> Divida por $a_1(x)$, se necessário.`,
+                    String.raw`<strong>3.</strong> Se aparecer só $y'+P(x)y=Q(x)$, use fator integrante.`,
+                    String.raw`<strong>4.</strong> Se surgir $y^n$, produto $yy'$, $\ln y$, $e^y$ etc., ela não é linear.`
                 ],
                 tips: [
-                    "$Q(x)$ pode ser zero. Ainda assim a equação continua linear.",
-                    "Bernoulli não é linear no formato original, mas pode virar linear após substituição."
+                    String.raw`$Q(x)$ pode ser zero. Ainda assim a equação continua linear.`,
+                    String.raw`Bernoulli não é linear no formato original, mas pode virar linear após substituição.`
                 ],
-                example: "Linear: $$y'+\frac{2}{x}y=4x$$\nNão linear: $$y'+xy=y^2$$"
+                example: String.raw`Linear: $$y'+\frac{2}{x}y=4x$$\nNão linear: $$y'+xy=y^2$$`
             },
             fator_integrante: {
-                title: "Fator Integrante",
-                badge: "1ª ordem linear",
-                condition: "$$y'+P(x)y=Q(x)$$",
-                concept: "O fator integrante transforma o lado esquerdo em uma derivada de produto. O truque é multiplicar toda a equação por $\mu(x)=e^{\int P(x)dx}$.",
+                title: String.raw`Fator Integrante`,
+                badge: String.raw`1ª ordem linear`,
+                condition: String.raw`$$y'+P(x)y=Q(x)$$`,
+                concept: String.raw`O fator integrante transforma o lado esquerdo em uma derivada de produto. O truque é multiplicar toda a equação por $\mu(x)=e^{\int P(x)dx}$.`,
                 steps: [
-                    "<strong>1.</strong> Escreva a equação como $y'+P(x)y=Q(x)$.",
-                    "<strong>2.</strong> Calcule $\mu(x)=e^{\int P(x)dx}$.",
-                    "<strong>3.</strong> Multiplique toda a equação por $\mu(x)$.",
-                    "<strong>4.</strong> Reescreva como $(\mu y)'=\mu Q(x)$.",
-                    "<strong>5.</strong> Integre: $\mu y=\int \mu Q(x)\,dx + C$.",
-                    "<strong>6.</strong> Isole $y$."
+                    String.raw`<strong>1.</strong> Escreva a equação como $y'+P(x)y=Q(x)$.`,
+                    String.raw`<strong>2.</strong> Calcule $\mu(x)=e^{\int P(x)dx}$.`,
+                    String.raw`<strong>3.</strong> Multiplique toda a equação por $\mu(x)$.`,
+                    String.raw`<strong>4.</strong> Reescreva como $(\mu y)'=\mu Q(x)$.`,
+                    String.raw`<strong>5.</strong> Integre: $\mu y=\int \mu Q(x)\,dx + C$.`,
+                    String.raw`<strong>6.</strong> Isole $y$.`
                 ],
                 tips: [
-                    "Não coloque a constante $+C$ dentro de $\int P(x)dx$ ao calcular $\mu(x)$.",
-                    "Sempre confira se o coeficiente de $y'$ é 1 antes de começar."
+                    String.raw`Não coloque a constante $+C$ dentro de $\int P(x)dx$ ao calcular $\mu(x)$.`,
+                    String.raw`Sempre confira se o coeficiente de $y'$ é 1 antes de começar.`
                 ],
-                example: "$$xy'+2y=4x^2$$\n$$y'+\frac{2}{x}y=4x$$\n$$\mu=e^{\int 2/x\,dx}=x^2$$\n$$(x^2y)'=4x^3$$\n$$x^2y=x^4+C$$\n$$y=x^2+\frac{C}{x^2}$$"
+                example: String.raw`$$xy'+2y=4x^2$$\n$$y'+\frac{2}{x}y=4x$$\n$$\mu=e^{\int 2/x\,dx}=x^2$$\n$$(x^2y)'=4x^3$$\n$$x^2y=x^4+C$$\n$$y=x^2+\frac{C}{x^2}$$`
             },
             nao_linear_question: {
-                title: "A EDO não é linear: qual classe ela parece seguir?",
-                badge: "triagem não linear",
-                condition: "Busque padrões especiais",
-                concept: "Nem toda EDO não linear é resolvível por uma única técnica. O segredo é identificar o padrão estrutural. Em cursos básicos, os mais frequentes são separável, exata, Bernoulli, homogênea de 1ª ordem e Riccati.",
+                title: String.raw`A EDO não é linear: qual classe ela parece seguir?`,
+                badge: String.raw`triagem não linear`,
+                condition: String.raw`Busque padrões especiais`,
+                concept: String.raw`Nem toda EDO não linear é resolvível por uma única técnica. O segredo é identificar o padrão estrutural. Em cursos básicos, os mais frequentes são separável, exata, Bernoulli, homogênea de 1ª ordem e Riccati.`,
                 steps: [
-                    "<strong>1.</strong> Tente separar $x$ e $y$ em lados opostos.",
-                    "<strong>2.</strong> Tente escrever como $M(x,y)dx+N(x,y)dy=0$.",
-                    "<strong>3.</strong> Veja se há formato $y'+P(x)y=Q(x)y^n$ (Bernoulli).",
-                    "<strong>4.</strong> Veja se $y'=F(y/x)$ ou $M$ e $N$ são homogêneas do mesmo grau.",
-                    "<strong>5.</strong> Se aparecer termo quadrático em $y$, teste Riccati."
+                    String.raw`<strong>1.</strong> Tente separar $x$ e $y$ em lados opostos.`,
+                    String.raw`<strong>2.</strong> Tente escrever como $M(x,y)dx+N(x,y)dy=0$.`,
+                    String.raw`<strong>3.</strong> Veja se há formato $y'+P(x)y=Q(x)y^n$ (Bernoulli).`,
+                    String.raw`<strong>4.</strong> Veja se $y'=F(y/x)$ ou $M$ e $N$ são homogêneas do mesmo grau.`,
+                    String.raw`<strong>5.</strong> Se aparecer termo quadrático em $y$, teste Riccati.`
                 ],
                 tips: [
-                    "Uma simples troca de variável pode revelar a classe escondida.",
-                    "Em prova, separar corretamente a classe costuma valer mais do que decorar fórmulas."
+                    String.raw`Uma simples troca de variável pode revelar a classe escondida.`,
+                    String.raw`Em prova, separar corretamente a classe costuma valer mais do que decorar fórmulas.`
                 ],
-                example: "$$y'=xe^{-y}\;\Rightarrow\;\text{separável}$$\n$$y'+y=xy^2\;\Rightarrow\;\text{Bernoulli}$$"
+                example: String.raw`$$y'=xe^{-y}\;\Rightarrow\;\text{separável}$$\n$$y'+y=xy^2\;\Rightarrow\;\text{Bernoulli}$$`
             },
             separavel: {
-                title: "Variáveis Separáveis",
-                badge: "1ª ordem",
-                condition: "$$f(y)dy=g(x)dx$$",
-                concept: "Se a equação puder ser reorganizada de modo que tudo com $y$ fique de um lado e tudo com $x$ do outro, basta integrar ambos os lados.",
+                title: String.raw`Variáveis Separáveis`,
+                badge: String.raw`1ª ordem`,
+                condition: String.raw`$$f(y)dy=g(x)dx$$`,
+                concept: String.raw`Se a equação puder ser reorganizada de modo que tudo com $y$ fique de um lado e tudo com $x$ do outro, basta integrar ambos os lados.`,
                 steps: [
-                    "<strong>1.</strong> Escreva $y'$ como $dy/dx$.",
-                    "<strong>2.</strong> Agrupe os termos com $y$ e $dy$ de um lado.",
-                    "<strong>3.</strong> Agrupe os termos com $x$ e $dx$ do outro.",
-                    "<strong>4.</strong> Integre os dois lados.",
-                    "<strong>5.</strong> Isole $y$, se possível."
+                    String.raw`<strong>1.</strong> Escreva $y'$ como $dy/dx$.`,
+                    String.raw`<strong>2.</strong> Agrupe os termos com $y$ e $dy$ de um lado.`,
+                    String.raw`<strong>3.</strong> Agrupe os termos com $x$ e $dx$ do outro.`,
+                    String.raw`<strong>4.</strong> Integre os dois lados.`,
+                    String.raw`<strong>5.</strong> Isole $y$, se possível.`
                 ],
                 tips: [
-                    "A constante de integração entra depois das integrais.",
-                    "Muitas leis físicas elementares levam a EDOs separáveis."
+                    String.raw`A constante de integração entra depois das integrais.`,
+                    String.raw`Muitas leis físicas elementares levam a EDOs separáveis.`
                 ],
-                example: "$$y'=xe^{-y}$$\n$$e^y\,dy=x\,dx$$\n$$\int e^y\,dy=\int x\,dx$$\n$$e^y=\frac{x^2}{2}+C$$\n$$y=\ln\left(\frac{x^2}{2}+C\right)$$"
+                example: String.raw`$$y'=xe^{-y}$$\n$$e^y\,dy=x\,dx$$\n$$\int e^y\,dy=\int x\,dx$$\n$$e^y=\frac{x^2}{2}+C$$\n$$y=\ln\left(\frac{x^2}{2}+C\right)$$`
             },
             exata_question: {
-                title: "A equação está no formato exato?",
-                badge: "teste de exatidão",
-                condition: "$$M(x,y)dx+N(x,y)dy=0$$",
-                concept: "Uma EDO escrita nessa forma pode ser exata se existir uma função potencial $F(x,y)$ tal que $dF=Mdx+Ndy$. O teste clássico é comparar as derivadas cruzadas.",
+                title: String.raw`A equação está no formato exato?`,
+                badge: String.raw`teste de exatidão`,
+                condition: String.raw`$$M(x,y)dx+N(x,y)dy=0$$`,
+                concept: String.raw`Uma EDO escrita nessa forma pode ser exata se existir uma função potencial $F(x,y)$ tal que $dF=Mdx+Ndy$. O teste clássico é comparar as derivadas cruzadas.`,
                 steps: [
-                    "<strong>1.</strong> Identifique $M(x,y)$ e $N(x,y)$.",
-                    "<strong>2.</strong> Calcule $\partial M/\partial y$.",
-                    "<strong>3.</strong> Calcule $\partial N/\partial x$.",
-                    "<strong>4.</strong> Se forem iguais, a EDO é exata.",
-                    "<strong>5.</strong> Se não forem, talvez exista fator integrante especial."
+                    String.raw`<strong>1.</strong> Identifique $M(x,y)$ e $N(x,y)$.`,
+                    String.raw`<strong>2.</strong> Calcule $\partial M/\partial y$.`,
+                    String.raw`<strong>3.</strong> Calcule $\partial N/\partial x$.`,
+                    String.raw`<strong>4.</strong> Se forem iguais, a EDO é exata.`,
+                    String.raw`<strong>5.</strong> Se não forem, talvez exista fator integrante especial.`
                 ],
                 tips: [
-                    "O formato diferencial precisa estar correto antes do teste.",
-                    "Às vezes basta multiplicar a equação por uma função simples de $x$ ou de $y$."
+                    String.raw`O formato diferencial precisa estar correto antes do teste.`,
+                    String.raw`Às vezes basta multiplicar a equação por uma função simples de $x$ ou de $y$.`
                 ],
-                example: "$$ (2xy+\cos x)dx+(x^2+e^y)dy=0 $$"
+                example: String.raw`$$ (2xy+\cos x)dx+(x^2+e^y)dy=0 $$`
             },
             exata: {
-                title: "Equação Exata",
-                badge: "1ª ordem",
-                condition: "$$\frac{\partial M}{\partial y}=\frac{\partial N}{\partial x}$$",
-                concept: "Se a equação é exata, então existe uma função potencial $F(x,y)$ cuja diferencial total é a própria EDO. Resolver passa a significar reconstruir $F(x,y)$.",
+                title: String.raw`Equação Exata`,
+                badge: String.raw`1ª ordem`,
+                condition: String.raw`$$\frac{\partial M}{\partial y}=\frac{\partial N}{\partial x}$$`,
+                concept: String.raw`Se a equação é exata, então existe uma função potencial $F(x,y)$ cuja diferencial total é a própria EDO. Resolver passa a significar reconstruir $F(x,y)$.`,
                 steps: [
-                    "<strong>1.</strong> Confirme a exatidão por $M_y=N_x$.",
-                    "<strong>2.</strong> Integre $M$ em relação a $x$: $F(x,y)=\int M\,dx+h(y)$.",
-                    "<strong>3.</strong> Derive $F$ em relação a $y$.",
-                    "<strong>4.</strong> Iguale o resultado a $N(x,y)$ para achar $h'(y)$.",
-                    "<strong>5.</strong> Integre $h'(y)$.",
-                    "<strong>6.</strong> Escreva $F(x,y)=C$."
+                    String.raw`<strong>1.</strong> Confirme a exatidão por $M_y=N_x$.`,
+                    String.raw`<strong>2.</strong> Integre $M$ em relação a $x$: $F(x,y)=\int M\,dx+h(y)$.`,
+                    String.raw`<strong>3.</strong> Derive $F$ em relação a $y$.`,
+                    String.raw`<strong>4.</strong> Iguale o resultado a $N(x,y)$ para achar $h'(y)$.`,
+                    String.raw`<strong>5.</strong> Integre $h'(y)$.`,
+                    String.raw`<strong>6.</strong> Escreva $F(x,y)=C$.`
                 ],
                 tips: [
-                    "Ao integrar $M$ em relação a $x$, trate $y$ como constante.",
-                    "No final a solução costuma aparecer de forma implícita."
+                    String.raw`Ao integrar $M$ em relação a $x$, trate $y$ como constante.`,
+                    String.raw`No final a solução costuma aparecer de forma implícita.`
                 ],
-                example: "$$ (2xy+\cos x)dx+(x^2+e^y)dy=0 $$\n$$M_y=2x,\quad N_x=2x$$\n$$F=\int(2xy+\cos x)dx=x^2y+\sin x+h(y)$$\n$$F_y=x^2+h'(y)=x^2+e^y$$\n$$h'(y)=e^y\Rightarrow h(y)=e^y$$\n$$x^2y+\sin x+e^y=C$$"
+                example: String.raw`$$ (2xy+\cos x)dx+(x^2+e^y)dy=0 $$\n$$M_y=2x,\quad N_x=2x$$\n$$F=\int(2xy+\cos x)dx=x^2y+\sin x+h(y)$$\n$$F_y=x^2+h'(y)=x^2+e^y$$\n$$h'(y)=e^y\Rightarrow h(y)=e^y$$\n$$x^2y+\sin x+e^y=C$$`
             },
             exata_fator: {
-                title: "Fator Integrante para Forçar Exatidão",
-                badge: "correção estrutural",
-                condition: "A EDO não é exata, mas admite um fator integrante simples",
-                concept: "Quando $M_y\neq N_x$, ainda pode existir uma função multiplicadora $\mu(x)$ ou $\mu(y)$ que transforme a equação em exata. Em cursos básicos, os testes mais comuns procuram dependência só de $x$ ou só de $y$.",
+                title: String.raw`Fator Integrante para Forçar Exatidão`,
+                badge: String.raw`correção estrutural`,
+                condition: String.raw`A EDO não é exata, mas admite um fator integrante simples`,
+                concept: String.raw`Quando $M_y\neq N_x$, ainda pode existir uma função multiplicadora $\mu(x)$ ou $\mu(y)$ que transforme a equação em exata. Em cursos básicos, os testes mais comuns procuram dependência só de $x$ ou só de $y$.`,
                 steps: [
-                    "<strong>1.</strong> Calcule $\dfrac{M_y-N_x}{N}$. Se depender apenas de $x$, tente $\mu(x)=e^{\int f(x)dx}$.",
-                    "<strong>2.</strong> Calcule $\dfrac{N_x-M_y}{M}$. Se depender apenas de $y$, tente $\mu(y)=e^{\int g(y)dy}$.",
-                    "<strong>3.</strong> Multiplique a EDO por $\mu$.",
-                    "<strong>4.</strong> Refaça o teste de exatidão.",
-                    "<strong>5.</strong> Resolva como equação exata."
+                    String.raw`<strong>1.</strong> Calcule $\dfrac{M_y-N_x}{N}$. Se depender apenas de $x$, tente $\mu(x)=e^{\int f(x)dx}$.`,
+                    String.raw`<strong>2.</strong> Calcule $\dfrac{N_x-M_y}{M}$. Se depender apenas de $y$, tente $\mu(y)=e^{\int g(y)dy}$.`,
+                    String.raw`<strong>3.</strong> Multiplique a EDO por $\mu$.`,
+                    String.raw`<strong>4.</strong> Refaça o teste de exatidão.`,
+                    String.raw`<strong>5.</strong> Resolva como equação exata.`
                 ],
                 tips: [
-                    "Nem toda EDO não exata admite um fator integrante simples.",
-                    "Se os testes falharem, pode ser necessário outro método ou uma substituição."
+                    String.raw`Nem toda EDO não exata admite um fator integrante simples.`,
+                    String.raw`Se os testes falharem, pode ser necessário outro método ou uma substituição.`
                 ],
-                example: "Se $$\frac{M_y-N_x}{N}=f(x),$$ então $$\mu(x)=e^{\int f(x)dx}.$$"
+                example: String.raw`Se $$\frac{M_y-N_x}{N}=f(x),$$ então $$\mu(x)=e^{\int f(x)dx}.$$`
             },
             bernoulli: {
-                title: "Equação de Bernoulli",
-                badge: "não linear redutível",
-                condition: "$$y'+P(x)y=Q(x)y^n,\quad n\neq 0,1$$",
-                concept: "A equação de Bernoulli parece não linear, mas vira linear após a substituição certa. O truque é usar $v=y^{1-n}$.",
+                title: String.raw`Equação de Bernoulli`,
+                badge: String.raw`não linear redutível`,
+                condition: String.raw`$$y'+P(x)y=Q(x)y^n,\quad n\neq 0,1$$`,
+                concept: String.raw`A equação de Bernoulli parece não linear, mas vira linear após a substituição certa. O truque é usar $v=y^{1-n}$.`,
                 steps: [
-                    "<strong>1.</strong> Coloque no formato $y'+P(x)y=Q(x)y^n$.",
-                    "<strong>2.</strong> Divida por $y^n$ para preparar a substituição.",
-                    "<strong>3.</strong> Defina $v=y^{1-n}$.",
-                    "<strong>4.</strong> Reescreva a EDO em termos de $v$; ela se torna linear.",
-                    "<strong>5.</strong> Resolva por fator integrante.",
-                    "<strong>6.</strong> Volte para $y$."
+                    String.raw`<strong>1.</strong> Coloque no formato $y'+P(x)y=Q(x)y^n$.`,
+                    String.raw`<strong>2.</strong> Divida por $y^n$ para preparar a substituição.`,
+                    String.raw`<strong>3.</strong> Defina $v=y^{1-n}$.`,
+                    String.raw`<strong>4.</strong> Reescreva a EDO em termos de $v$; ela se torna linear.`,
+                    String.raw`<strong>5.</strong> Resolva por fator integrante.`,
+                    String.raw`<strong>6.</strong> Volte para $y$.`
                 ],
                 tips: [
-                    "Se $n=0$ ou $n=1$, a equação já é linear e não precisa da substituição de Bernoulli.",
-                    "O erro mais comum é esquecer a derivada de $v=y^{1-n}$."
+                    String.raw`Se $n=0$ ou $n=1$, a equação já é linear e não precisa da substituição de Bernoulli.`,
+                    String.raw`O erro mais comum é esquecer a derivada de $v=y^{1-n}$.`
                 ],
-                example: "$$y'+y=xy^2$$\nDividindo por $y^2$:\n$$\frac{y'}{y^2}+\frac{1}{y}=x$$\nUse $v=y^{-1}$, então $v'=-y'/y^2$."
+                example: String.raw`$$y'+y=xy^2$$\nDividindo por $y^2$:\n$$\frac{y'}{y^2}+\frac{1}{y}=x$$\nUse $v=y^{-1}$, então $v'=-y'/y^2$.`
             },
             homogenea1: {
-                title: "EDO Homogênea de 1ª Ordem",
-                badge: "substituição padrão",
-                condition: "$$y'=F\!\left(\frac{y}{x}\right)$$",
-                concept: "Aqui 'homogênea' significa que o lado direito depende apenas da razão $y/x$, ou que $M$ e $N$ são homogêneas do mesmo grau. A substituição padrão é $y=vx$.",
+                title: String.raw`EDO Homogênea de 1ª Ordem`,
+                badge: String.raw`substituição padrão`,
+                condition: String.raw`$$y'=F\!\left(\frac{y}{x}\right)$$`,
+                concept: String.raw`Aqui 'homogênea' significa que o lado direito depende apenas da razão $y/x$, ou que $M$ e $N$ são homogêneas do mesmo grau. A substituição padrão é $y=vx$.`,
                 steps: [
-                    "<strong>1.</strong> Verifique se a equação depende apenas de $y/x$.",
-                    "<strong>2.</strong> Faça $y=vx$.",
-                    "<strong>3.</strong> Derive: $y'=v+xv'$.",
-                    "<strong>4.</strong> Substitua na EDO.",
-                    "<strong>5.</strong> Resolva a EDO resultante em $v$; geralmente ela fica separável.",
-                    "<strong>6.</strong> Volte com $v=y/x$."
+                    String.raw`<strong>1.</strong> Verifique se a equação depende apenas de $y/x$.`,
+                    String.raw`<strong>2.</strong> Faça $y=vx$.`,
+                    String.raw`<strong>3.</strong> Derive: $y'=v+xv'$.`,
+                    String.raw`<strong>4.</strong> Substitua na EDO.`,
+                    String.raw`<strong>5.</strong> Resolva a EDO resultante em $v$; geralmente ela fica separável.`,
+                    String.raw`<strong>6.</strong> Volte com $v=y/x$.`
                 ],
                 tips: [
-                    "Não confunda com EDO linear homogênea de 2ª ordem.",
-                    "A substituição só funciona quando a razão $y/x$ realmente domina a equação."
+                    String.raw`Não confunda com EDO linear homogênea de 2ª ordem.`,
+                    String.raw`A substituição só funciona quando a razão $y/x$ realmente domina a equação.`
                 ],
-                example: "$$y'=1+\frac{y}{x}$$\nFaça $y=vx$, então $y'=v+xv'$.\nLogo $$v+xv'=1+v\Rightarrow xv'=1.$$"
+                example: String.raw`$$y'=1+\frac{y}{x}$$\nFaça $y=vx$, então $y'=v+xv'$.\nLogo $$v+xv'=1+v\Rightarrow xv'=1.$$`
             },
             riccati: {
-                title: "Equação de Riccati",
-                badge: "caso especial",
-                condition: "$$y'=a(x)y^2+b(x)y+c(x)$$",
-                concept: "A equação de Riccati é não linear por causa do termo $y^2$. Se uma solução particular $y_p$ for conhecida, a substituição $y=y_p+1/u$ reduz o problema a uma equação linear para $u$.",
+                title: String.raw`Equação de Riccati`,
+                badge: String.raw`caso especial`,
+                condition: String.raw`$$y'=a(x)y^2+b(x)y+c(x)$$`,
+                concept: String.raw`A equação de Riccati é não linear por causa do termo $y^2$. Se uma solução particular $y_p$ for conhecida, a substituição $y=y_p+1/u$ reduz o problema a uma equação linear para $u$.`,
                 steps: [
-                    "<strong>1.</strong> Identifique o formato quadrático em $y$.",
-                    "<strong>2.</strong> Procure uma solução particular $y_p$ simples.",
-                    "<strong>3.</strong> Faça $y=y_p+1/u$.",
-                    "<strong>4.</strong> Substitua e simplifique.",
-                    "<strong>5.</strong> Resolva a EDO linear obtida para $u$.",
-                    "<strong>6.</strong> Retorne a $y$."
+                    String.raw`<strong>1.</strong> Identifique o formato quadrático em $y$.`,
+                    String.raw`<strong>2.</strong> Procure uma solução particular $y_p$ simples.`,
+                    String.raw`<strong>3.</strong> Faça $y=y_p+1/u$.`,
+                    String.raw`<strong>4.</strong> Substitua e simplifique.`,
+                    String.raw`<strong>5.</strong> Resolva a EDO linear obtida para $u$.`,
+                    String.raw`<strong>6.</strong> Retorne a $y$.`
                 ],
                 tips: [
-                    "Sem solução particular conhecida, Riccati costuma ser bem mais difícil.",
-                    "Muitos exercícios didáticos já dão ou sugerem uma solução particular."
+                    String.raw`Sem solução particular conhecida, Riccati costuma ser bem mais difícil.`,
+                    String.raw`Muitos exercícios didáticos já dão ou sugerem uma solução particular.`
                 ],
-                example: "$$y'=y^2-x y+1$$\nSe uma solução particular $y_p$ for conhecida, use $$y=y_p+\frac{1}{u}.$$"
+                example: String.raw`$$y'=y^2-x y+1$$\nSe uma solução particular $y_p$ for conhecida, use $$y=y_p+\frac{1}{u}.$$`
             },
             ordem2: {
-                title: "EDOs de 2ª Ordem",
-                badge: "classificação",
-                condition: "A maior derivada presente é $y''$",
-                concept: "Em 2ª ordem, o caminho mais comum começa verificando se os coeficientes são constantes. Se forem, entram polinômio característico, coeficientes indeterminados e variação de parâmetros. Se não forem, pode surgir Cauchy-Euler, solução em séries ou técnicas especiais.",
+                title: String.raw`EDOs de 2ª Ordem`,
+                badge: String.raw`classificação`,
+                condition: String.raw`A maior derivada presente é $y''$`,
+                concept: String.raw`Em 2ª ordem, o caminho mais comum começa verificando se os coeficientes são constantes. Se forem, entram polinômio característico, coeficientes indeterminados e variação de parâmetros. Se não forem, pode surgir Cauchy-Euler, solução em séries ou técnicas especiais.`,
                 steps: [
-                    "<strong>1.</strong> Coloque a equação em forma padrão.",
-                    "<strong>2.</strong> Veja se os coeficientes são constantes ou funções de $x$.",
-                    "<strong>3.</strong> Se for homogênea com coeficientes constantes, use a equação característica.",
-                    "<strong>4.</strong> Se não homogênea, escolha entre coeficientes indeterminados e variação de parâmetros.",
-                    "<strong>5.</strong> Se houver estrutura equidimensional, teste Cauchy-Euler."
+                    String.raw`<strong>1.</strong> Coloque a equação em forma padrão.`,
+                    String.raw`<strong>2.</strong> Veja se os coeficientes são constantes ou funções de $x$.`,
+                    String.raw`<strong>3.</strong> Se for homogênea com coeficientes constantes, use a equação característica.`,
+                    String.raw`<strong>4.</strong> Se não homogênea, escolha entre coeficientes indeterminados e variação de parâmetros.`,
+                    String.raw`<strong>5.</strong> Se houver estrutura equidimensional, teste Cauchy-Euler.`
                 ],
                 tips: [
-                    "A forma do termo forçante costuma indicar o método particular mais rápido.",
-                    "Se faltar $y$ ou faltar $y'$, a redução de ordem pode simplificar muito."
+                    String.raw`A forma do termo forçante costuma indicar o método particular mais rápido.`,
+                    String.raw`Se faltar $y$ ou faltar $y'$, a redução de ordem pode simplificar muito.`
                 ],
-                example: "$$y''+4y'+4y=e^x$$"
+                example: String.raw`$$y''+4y'+4y=e^x$$`
             },
             coef_constantes: {
-                title: "Coeficientes constantes?",
-                badge: "triagem de 2ª ordem",
-                condition: "Ex.: $$ay''+by'+cy=g(x)$$ com $a,b,c$ constantes",
-                concept: "Se os coeficientes que multiplicam $y''$, $y'$ e $y$ são constantes numéricas, você entra na família clássica resolvida por polinômio característico e métodos padrão para a parte particular.",
+                title: String.raw`Coeficientes constantes?`,
+                badge: String.raw`triagem de 2ª ordem`,
+                condition: String.raw`Ex.: $$ay''+by'+cy=g(x)$$ com $a,b,c$ constantes`,
+                concept: String.raw`Se os coeficientes que multiplicam $y''$, $y'$ e $y$ são constantes numéricas, você entra na família clássica resolvida por polinômio característico e métodos padrão para a parte particular.`,
                 steps: [
-                    "<strong>1.</strong> Confira se os coeficientes são números, não funções de $x$.",
-                    "<strong>2.</strong> Se o lado direito for zero, é homogênea.",
-                    "<strong>3.</strong> Se o lado direito for diferente de zero, é não homogênea.",
-                    "<strong>4.</strong> Escolha o método compatível com o tipo do termo forçante."
+                    String.raw`<strong>1.</strong> Confira se os coeficientes são números, não funções de $x$.`,
+                    String.raw`<strong>2.</strong> Se o lado direito for zero, é homogênea.`,
+                    String.raw`<strong>3.</strong> Se o lado direito for diferente de zero, é não homogênea.`,
+                    String.raw`<strong>4.</strong> Escolha o método compatível com o tipo do termo forçante.`
                 ],
                 tips: [
-                    "Coeficientes constantes não significam solução constante; significam apenas que o operador é invariável em $x$.",
-                    "Laplace também costuma funcionar muito bem aqui quando há condições iniciais."
+                    String.raw`Coeficientes constantes não significam solução constante; significam apenas que o operador é invariável em $x$.`,
+                    String.raw`Laplace também costuma funcionar muito bem aqui quando há condições iniciais.`
                 ],
-                example: "$$y''-3y'+2y=e^{2x}$$"
+                example: String.raw`$$y''-3y'+2y=e^{2x}$$`
             },
             homogenea_question: {
-                title: "A equação é homogênea ou não homogênea?",
-                badge: "ramificação",
-                condition: "Homogênea: lado direito igual a zero",
-                concept: "Depois de confirmar coeficientes constantes, o próximo passo é olhar o termo forçante. Se ele for zero, use apenas a parte homogênea. Se não for zero, será preciso encontrar uma solução particular e somá-la à homogênea.",
+                title: String.raw`A equação é homogênea ou não homogênea?`,
+                badge: String.raw`ramificação`,
+                condition: String.raw`Homogênea: lado direito igual a zero`,
+                concept: String.raw`Depois de confirmar coeficientes constantes, o próximo passo é olhar o termo forçante. Se ele for zero, use apenas a parte homogênea. Se não for zero, será preciso encontrar uma solução particular e somá-la à homogênea.`,
                 steps: [
-                    "<strong>1.</strong> Escreva a EDO como $ay''+by'+cy=g(x)$.",
-                    "<strong>2.</strong> Se $g(x)=0$, resolva a homogênea via equação característica.",
-                    "<strong>3.</strong> Se $g(x)\neq 0$, primeiro resolva a homogênea e depois ache uma particular.",
-                    "<strong>4.</strong> Some tudo: $y=y_h+y_p$."
+                    String.raw`<strong>1.</strong> Escreva a EDO como $ay''+by'+cy=g(x)$.`,
+                    String.raw`<strong>2.</strong> Se $g(x)=0$, resolva a homogênea via equação característica.`,
+                    String.raw`<strong>3.</strong> Se $g(x)\neq 0$, primeiro resolva a homogênea e depois ache uma particular.`,
+                    String.raw`<strong>4.</strong> Some tudo: $y=y_h+y_p$.`
                 ],
                 tips: [
-                    "Toda não homogênea precisa da homogênea como base.",
-                    "O formato de $g(x)$ influencia diretamente a escolha do método particular."
+                    String.raw`Toda não homogênea precisa da homogênea como base.`,
+                    String.raw`O formato de $g(x)$ influencia diretamente a escolha do método particular.`
                 ],
-                example: "Homogênea: $$y''-5y'+6y=0$$\nNão homogênea: $$y''-5y'+6y=e^x$$"
+                example: String.raw`Homogênea: $$y''-5y'+6y=0$$\nNão homogênea: $$y''-5y'+6y=e^x$$`
             },
             homogenea: {
-                title: "2ª Ordem Homogênea com Coeficientes Constantes",
-                badge: "equação característica",
-                condition: "$$ay''+by'+cy=0$$",
-                concept: "O método padrão supõe solução exponencial $y=e^{rx}$. Isso leva ao polinômio característico $ar^2+br+c=0$. O tipo das raízes define o formato da solução.",
+                title: String.raw`2ª Ordem Homogênea com Coeficientes Constantes`,
+                badge: String.raw`equação característica`,
+                condition: String.raw`$$ay''+by'+cy=0$$`,
+                concept: String.raw`O método padrão supõe solução exponencial $y=e^{rx}$. Isso leva ao polinômio característico $ar^2+br+c=0$. O tipo das raízes define o formato da solução.`,
                 steps: [
-                    "<strong>1.</strong> Monte a equação característica $ar^2+br+c=0$.",
-                    "<strong>2.</strong> Resolva para obter as raízes $r$.",
-                    "<strong>3.</strong> Se as raízes forem reais e distintas: $y=C_1e^{r_1x}+C_2e^{r_2x}$.",
-                    "<strong>4.</strong> Se forem reais e iguais: $y=(C_1+C_2x)e^{rx}$.",
-                    "<strong>5.</strong> Se forem complexas $\alpha\pm\beta i$: $y=e^{\alpha x}(C_1\cos\beta x+C_2\sin\beta x)$."
+                    String.raw`<strong>1.</strong> Monte a equação característica $ar^2+br+c=0$.`,
+                    String.raw`<strong>2.</strong> Resolva para obter as raízes $r$.`,
+                    String.raw`<strong>3.</strong> Se as raízes forem reais e distintas: $y=C_1e^{r_1x}+C_2e^{r_2x}$.`,
+                    String.raw`<strong>4.</strong> Se forem reais e iguais: $y=(C_1+C_2x)e^{rx}$.`,
+                    String.raw`<strong>5.</strong> Se forem complexas $\alpha\pm\beta i$: $y=e^{\alpha x}(C_1\cos\beta x+C_2\sin\beta x)$.`
                 ],
                 tips: [
-                    "O caso de raiz repetida exige o fator extra $x$.",
-                    "Raízes complexas sempre aparecem em par conjugado."
+                    String.raw`O caso de raiz repetida exige o fator extra $x$.`,
+                    String.raw`Raízes complexas sempre aparecem em par conjugado.`
                 ],
-                example: "$$y''-5y'+6y=0$$\n$$r^2-5r+6=0\Rightarrow (r-2)(r-3)=0$$\n$$y=C_1e^{2x}+C_2e^{3x}$$"
+                example: String.raw`$$y''-5y'+6y=0$$\n$$r^2-5r+6=0\Rightarrow (r-2)(r-3)=0$$\n$$y=C_1e^{2x}+C_2e^{3x}$$`
             },
             nao_homogenea: {
-                title: "2ª Ordem Não Homogênea",
-                badge: "particular + homogênea",
-                condition: "$$ay''+by'+cy=g(x),\quad g(x)\neq 0$$",
-                concept: "A solução geral é a soma da parte homogênea com uma solução particular: $y=y_h+y_p$. O desafio é escolher o método certo para encontrar $y_p$.",
+                title: String.raw`2ª Ordem Não Homogênea`,
+                badge: String.raw`particular + homogênea`,
+                condition: String.raw`$$ay''+by'+cy=g(x),\quad g(x)\neq 0$$`,
+                concept: String.raw`A solução geral é a soma da parte homogênea com uma solução particular: $y=y_h+y_p$. O desafio é escolher o método certo para encontrar $y_p$.`,
                 steps: [
-                    "<strong>1.</strong> Resolva a homogênea associada $ay''+by'+cy=0$.",
-                    "<strong>2.</strong> Analise o formato de $g(x)$.",
-                    "<strong>3.</strong> Se $g(x)$ for polinômio, exponencial, seno/cosseno ou combinação deles, tente coeficientes indeterminados.",
-                    "<strong>4.</strong> Se o termo forçante for mais geral, use variação de parâmetros.",
-                    "<strong>5.</strong> Some $y_h+y_p$."
+                    String.raw`<strong>1.</strong> Resolva a homogênea associada $ay''+by'+cy=0$.`,
+                    String.raw`<strong>2.</strong> Analise o formato de $g(x)$.`,
+                    String.raw`<strong>3.</strong> Se $g(x)$ for polinômio, exponencial, seno/cosseno ou combinação deles, tente coeficientes indeterminados.`,
+                    String.raw`<strong>4.</strong> Se o termo forçante for mais geral, use variação de parâmetros.`,
+                    String.raw`<strong>5.</strong> Some $y_h+y_p$.`
                 ],
                 tips: [
-                    "Se o chute de coeficientes indeterminados coincidir com $y_h$, multiplique por $x$ até ficar independente.",
-                    "Variação de parâmetros é mais universal, mas costuma dar integrais mais pesadas."
+                    String.raw`Se o chute de coeficientes indeterminados coincidir com $y_h$, multiplique por $x$ até ficar independente.`,
+                    String.raw`Variação de parâmetros é mais universal, mas costuma dar integrais mais pesadas.`
                 ],
-                example: "$$y''-3y'+2y=e^x$$"
+                example: String.raw`$$y''-3y'+2y=e^x$$`
             },
             coef_indeterminados: {
-                title: "Coeficientes Indeterminados",
-                badge: "particular rápida",
-                condition: "Termo forçante do tipo polinômio, exponencial, seno/cosseno ou combinações",
-                concept: "O método consiste em chutar a forma de $y_p$ baseada em $g(x)$, substituir na EDO e determinar os coeficientes desconhecidos.",
+                title: String.raw`Coeficientes Indeterminados`,
+                badge: String.raw`particular rápida`,
+                condition: String.raw`Termo forçante do tipo polinômio, exponencial, seno/cosseno ou combinações`,
+                concept: String.raw`O método consiste em chutar a forma de $y_p$ baseada em $g(x)$, substituir na EDO e determinar os coeficientes desconhecidos.`,
                 steps: [
-                    "<strong>1.</strong> Resolva a homogênea e guarde $y_h$.",
-                    "<strong>2.</strong> Chute $y_p$ com a mesma família de funções de $g(x)$.",
-                    "<strong>3.</strong> Se o chute repetir termo de $y_h$, multiplique por $x$.",
-                    "<strong>4.</strong> Substitua na EDO.",
-                    "<strong>5.</strong> Compare coeficientes para achar as constantes do chute."
+                    String.raw`<strong>1.</strong> Resolva a homogênea e guarde $y_h$.`,
+                    String.raw`<strong>2.</strong> Chute $y_p$ com a mesma família de funções de $g(x)$.`,
+                    String.raw`<strong>3.</strong> Se o chute repetir termo de $y_h$, multiplique por $x$.`,
+                    String.raw`<strong>4.</strong> Substitua na EDO.`,
+                    String.raw`<strong>5.</strong> Compare coeficientes para achar as constantes do chute.`
                 ],
                 tips: [
-                    "É rápido, mas não serve para qualquer $g(x)$.",
-                    "Muito usado em provas por economizar integrais."
+                    String.raw`É rápido, mas não serve para qualquer $g(x)$.`,
+                    String.raw`Muito usado em provas por economizar integrais.`
                 ],
-                example: "$$y''-3y'+2y=e^x$$\nHomogênea: $$y_h=C_1e^x+C_2e^{2x}$$\nComo $e^x$ já está em $y_h$, tente $$y_p=Ax e^x.$$"
+                example: String.raw`$$y''-3y'+2y=e^x$$\nHomogênea: $$y_h=C_1e^x+C_2e^{2x}$$\nComo $e^x$ já está em $y_h$, tente $$y_p=Ax e^x.$$`
             },
             var_parametros: {
-                title: "Variação de Parâmetros",
-                badge: "método geral",
-                condition: "EDO linear de 2ª ordem com solução homogênea conhecida",
-                concept: "Em vez de constantes fixas na solução homogênea, o método troca essas constantes por funções. É mais geral do que coeficientes indeterminados.",
+                title: String.raw`Variação de Parâmetros`,
+                badge: String.raw`método geral`,
+                condition: String.raw`EDO linear de 2ª ordem com solução homogênea conhecida`,
+                concept: String.raw`Em vez de constantes fixas na solução homogênea, o método troca essas constantes por funções. É mais geral do que coeficientes indeterminados.`,
                 steps: [
-                    "<strong>1.</strong> Resolva a homogênea e ache duas soluções independentes $y_1$ e $y_2$.",
-                    "<strong>2.</strong> Coloque a EDO em forma padrão: $y''+P(x)y'+Q(x)y=G(x)$.",
-                    "<strong>3.</strong> Calcule o wronskiano $W=y_1y_2'-y_1'y_2$.",
-                    "<strong>4.</strong> Use $$u_1'=-\frac{y_2G}{W},\qquad u_2'=\frac{y_1G}{W}.$$",
-                    "<strong>5.</strong> Integre para achar $u_1$ e $u_2$.",
-                    "<strong>6.</strong> Monte $$y_p=u_1y_1+u_2y_2.$$"
+                    String.raw`<strong>1.</strong> Resolva a homogênea e ache duas soluções independentes $y_1$ e $y_2$.`,
+                    String.raw`<strong>2.</strong> Coloque a EDO em forma padrão: $y''+P(x)y'+Q(x)y=G(x)$.`,
+                    String.raw`<strong>3.</strong> Calcule o wronskiano $W=y_1y_2'-y_1'y_2$.`,
+                    String.raw`<strong>4.</strong> Use $$u_1'=-\frac{y_2G}{W},\qquad u_2'=\frac{y_1G}{W}.$$`,
+                    String.raw`<strong>5.</strong> Integre para achar $u_1$ e $u_2$.`,
+                    String.raw`<strong>6.</strong> Monte $$y_p=u_1y_1+u_2y_2.$$`
                 ],
                 tips: [
-                    "Funciona em muitos casos onde coeficientes indeterminados falha.",
-                    "O custo costuma ser o trabalho algébrico e as integrais."
+                    String.raw`Funciona em muitos casos onde coeficientes indeterminados falha.`,
+                    String.raw`O custo costuma ser o trabalho algébrico e as integrais.`
                 ],
-                example: "Se $$y_1=e^x,\; y_2=e^{-x},$$ então $$W=-2.$$"
+                example: String.raw`Se $$y_1=e^x,\; y_2=e^{-x},$$ então $$W=-2.$$`
             },
             coef_variaveis: {
-                title: "Coeficientes Variáveis",
-                badge: "2ª ordem avançada",
-                condition: "Os coeficientes de $y''$, $y'$ e $y$ dependem de $x$",
-                concept: "Quando os coeficientes variam com $x$, o método das exponenciais geralmente deixa de funcionar. Aí entram classes especiais, como Cauchy-Euler, ou métodos por séries de potências.",
+                title: String.raw`Coeficientes Variáveis`,
+                badge: String.raw`2ª ordem avançada`,
+                condition: String.raw`Os coeficientes de $y''$, $y'$ e $y$ dependem de $x$`,
+                concept: String.raw`Quando os coeficientes variam com $x$, o método das exponenciais geralmente deixa de funcionar. Aí entram classes especiais, como Cauchy-Euler, ou métodos por séries de potências.`,
                 steps: [
-                    "<strong>1.</strong> Veja se há padrão equidimensional $x^2y''+axy'+by=\cdots$.",
-                    "<strong>2.</strong> Se houver, teste Cauchy-Euler.",
-                    "<strong>3.</strong> Se não houver estrutura especial, considere séries de potências.",
-                    "<strong>4.</strong> Perto de pontos singulares, métodos como Frobenius podem aparecer."
+                    String.raw`<strong>1.</strong> Veja se há padrão equidimensional $x^2y''+axy'+by=\cdots$.`,
+                    String.raw`<strong>2.</strong> Se houver, teste Cauchy-Euler.`,
+                    String.raw`<strong>3.</strong> Se não houver estrutura especial, considere séries de potências.`,
+                    String.raw`<strong>4.</strong> Perto de pontos singulares, métodos como Frobenius podem aparecer.`
                 ],
                 tips: [
-                    "Coeficientes variáveis aparecem muito em física matemática.",
-                    "Nem sempre existe solução elementar fechada."
+                    String.raw`Coeficientes variáveis aparecem muito em física matemática.`,
+                    String.raw`Nem sempre existe solução elementar fechada.`
                 ],
-                example: "$$x^2y''-3xy'+4y=0$$"
+                example: String.raw`$$x^2y''-3xy'+4y=0$$`
             },
             cauchy_euler: {
-                title: "Equação de Cauchy-Euler",
-                badge: "equidimensional",
-                condition: "$$x^2y''+axy'+by=0$$",
-                concept: "Essa classe é especial porque as potências de $x$ acompanham a ordem das derivadas. O chute natural é $y=x^m$.",
+                title: String.raw`Equação de Cauchy-Euler`,
+                badge: String.raw`equidimensional`,
+                condition: String.raw`$$x^2y''+axy'+by=0$$`,
+                concept: String.raw`Essa classe é especial porque as potências de $x$ acompanham a ordem das derivadas. O chute natural é $y=x^m$.`,
                 steps: [
-                    "<strong>1.</strong> Verifique o padrão $x^2y''+axy'+by=0$.",
-                    "<strong>2.</strong> Suponha $y=x^m$.",
-                    "<strong>3.</strong> Substitua na EDO.",
-                    "<strong>4.</strong> Obtenha a equação indicial: $m(m-1)+am+b=0$.",
-                    "<strong>5.</strong> Resolva como no caso de coeficientes constantes, mas com base em $x^m$."
+                    String.raw`<strong>1.</strong> Verifique o padrão $x^2y''+axy'+by=0$.`,
+                    String.raw`<strong>2.</strong> Suponha $y=x^m$.`,
+                    String.raw`<strong>3.</strong> Substitua na EDO.`,
+                    String.raw`<strong>4.</strong> Obtenha a equação indicial: $m(m-1)+am+b=0$.`,
+                    String.raw`<strong>5.</strong> Resolva como no caso de coeficientes constantes, mas com base em $x^m$.`
                 ],
                 tips: [
-                    "Se a raiz for dupla, aparece um termo com $\ln x$.",
-                    "Para raízes complexas, surgem expressões com $\cos(\beta\ln x)$ e $\sin(\beta\ln x)$."
+                    String.raw`Se a raiz for dupla, aparece um termo com $\ln x$.`,
+                    String.raw`Para raízes complexas, surgem expressões com $\cos(\beta\ln x)$ e $\sin(\beta\ln x)$.`
                 ],
-                example: "$$x^2y''-3xy'+4y=0$$\nChute: $$y=x^m$$\n$$m(m-1)-3m+4=0\Rightarrow m^2-4m+4=0$$\n$$m=2$$ (raiz dupla)\n$$y=x^2(C_1+C_2\ln x)$$"
+                example: String.raw`$$x^2y''-3xy'+4y=0$$\nChute: $$y=x^m$$\n$$m(m-1)-3m+4=0\Rightarrow m^2-4m+4=0$$\n$$m=2$$ (raiz dupla)\n$$y=x^2(C_1+C_2\ln x)$$`
             },
             series: {
-                title: "Soluções em Séries de Potências",
-                badge: "recurso geral",
-                condition: "Quando a EDO não encaixa em classes fechadas simples",
-                concept: "A ideia é supor uma solução do tipo $y=\sum_{n=0}^{\infty}c_nx^n$, derivar termo a termo e substituir na equação. Depois, igualam-se coeficientes para obter relações de recorrência.",
+                title: String.raw`Soluções em Séries de Potências`,
+                badge: String.raw`recurso geral`,
+                condition: String.raw`Quando a EDO não encaixa em classes fechadas simples`,
+                concept: String.raw`A ideia é supor uma solução do tipo $y=\sum_{n=0}^{\infty}c_nx^n$, derivar termo a termo e substituir na equação. Depois, igualam-se coeficientes para obter relações de recorrência.`,
                 steps: [
-                    "<strong>1.</strong> Suponha $$y=\sum_{n=0}^{\infty} c_nx^n.$$",
-                    "<strong>2.</strong> Calcule $y'$ e $y''$ em série.",
-                    "<strong>3.</strong> Substitua tudo na EDO.",
-                    "<strong>4.</strong> Ajuste os índices para escrever tudo na mesma potência de $x$.",
-                    "<strong>5.</strong> Iguale coeficientes e obtenha a recorrência.",
-                    "<strong>6.</strong> Gere os coeficientes a partir dos valores livres iniciais."
+                    String.raw`<strong>1.</strong> Suponha $$y=\sum_{n=0}^{\infty} c_nx^n.$$`,
+                    String.raw`<strong>2.</strong> Calcule $y'$ e $y''$ em série.`,
+                    String.raw`<strong>3.</strong> Substitua tudo na EDO.`,
+                    String.raw`<strong>4.</strong> Ajuste os índices para escrever tudo na mesma potência de $x$.`,
+                    String.raw`<strong>5.</strong> Iguale coeficientes e obtenha a recorrência.`,
+                    String.raw`<strong>6.</strong> Gere os coeficientes a partir dos valores livres iniciais.`
                 ],
                 tips: [
-                    "Muito útil para Airy, Bessel, Legendre e problemas sem solução elementar simples.",
-                    "O ponto em torno do qual você expande importa bastante."
+                    String.raw`Muito útil para Airy, Bessel, Legendre e problemas sem solução elementar simples.`,
+                    String.raw`O ponto em torno do qual você expande importa bastante.`
                 ],
-                example: "Para $$y''-xy=0$$, use $$y=\sum_{n=0}^{\infty}c_nx^n$$ e obtenha uma relação entre $c_{n+2}$ e $c_{n-1}$."
+                example: String.raw`Para $$y''-xy=0$$, use $$y=\sum_{n=0}^{\infty}c_nx^n$$ e obtenha uma relação entre $c_{n+2}$ e $c_{n-1}$.`
             },
             reducao_ordem: {
-                title: "Redução de Ordem",
-                badge: "atalho estratégico",
-                condition: "Use quando faltar $y$ ou $y'$, ou quando uma solução $y_1$ já é conhecida",
-                concept: "Há dois cenários clássicos. Se a EDO não contém explicitamente $y$ ou não contém $x$, uma substituição em derivadas reduz a ordem. Em equações lineares homogêneas de 2ª ordem, se uma solução $y_1$ é conhecida, é possível encontrar uma segunda solução $y_2$.",
+                title: String.raw`Redução de Ordem`,
+                badge: String.raw`atalho estratégico`,
+                condition: String.raw`Use quando faltar $y$ ou $y'$, ou quando uma solução $y_1$ já é conhecida`,
+                concept: String.raw`Há dois cenários clássicos. Se a EDO não contém explicitamente $y$ ou não contém $x$, uma substituição em derivadas reduz a ordem. Em equações lineares homogêneas de 2ª ordem, se uma solução $y_1$ é conhecida, é possível encontrar uma segunda solução $y_2$.`,
                 steps: [
-                    "<strong>Caso 1:</strong> Se faltar $y$, faça $u=y'$ e reduza para 1ª ordem.",
-                    "<strong>Caso 2:</strong> Se faltar $x$, use $y'=p(y)$ e trabalhe com cadeia.",
-                    "<strong>Caso 3:</strong> Se $y_1$ é conhecida em $$y''+P(x)y'+Q(x)y=0,$$ use $$y_2=y_1\int\frac{e^{-\int P(x)dx}}{y_1^2}\,dx.$$"
+                    String.raw`<strong>Caso 1:</strong> Se faltar $y$, faça $u=y'$ e reduza para 1ª ordem.`,
+                    String.raw`<strong>Caso 2:</strong> Se faltar $x$, use $y'=p(y)$ e trabalhe com cadeia.`,
+                    String.raw`<strong>Caso 3:</strong> Se $y_1$ é conhecida em $$y''+P(x)y'+Q(x)y=0,$$ use $$y_2=y_1\int\frac{e^{-\int P(x)dx}}{y_1^2}\,dx.$$`
                 ],
                 tips: [
-                    "Na fórmula de $y_2$, a EDO precisa estar na forma padrão com coeficiente 1 em $y''$.",
-                    "Ao final, a solução geral fica $y=C_1y_1+C_2y_2$."
+                    String.raw`Na fórmula de $y_2$, a EDO precisa estar na forma padrão com coeficiente 1 em $y''$.`,
+                    String.raw`Ao final, a solução geral fica $y=C_1y_1+C_2y_2$.`
                 ],
-                example: "Para $$y''-y=0$$ com $$y_1=e^x$$, temos $$P(x)=0$$ e\n$$y_2=e^x\int\frac{1}{e^{2x}}dx=e^x\int e^{-2x}dx\propto e^{-x}.$$"
+                example: String.raw`Para $$y''-y=0$$ com $$y_1=e^x$$, temos $$P(x)=0$$ e\n$$y_2=e^x\int\frac{1}{e^{2x}}dx=e^x\int e^{-2x}dx\propto e^{-x}.$$`
             }
         };
 
@@ -877,6 +1000,13 @@
         });
         slider.addEventListener('mouseleave', () => { isDown = false; slider.classList.remove('active'); });
         slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active'); });
+        window.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active'); });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeModal();
+                closeCheatSheet();
+            }
+        });
         slider.addEventListener('mousemove', (e) => {
             if (!isDown) return;
             e.preventDefault();
@@ -936,7 +1066,7 @@
             const exampleBlock = document.getElementById('modal-example');
             if (data.example) {
                 exampleBlock.parentElement.parentElement.style.display = 'block';
-                exampleBlock.innerHTML = data.example.replace(/\n/g, '<br>');
+                exampleBlock.innerHTML = data.example.replace(/\\n|\n/g, '<br>');
             } else {
                 exampleBlock.parentElement.parentElement.style.display = 'none';
             }
@@ -957,6 +1087,7 @@
         }
 
         function showCheatSheet() {
+            switchTab('tab-integrais');
             cheatModal.classList.remove('invisible');
             requestAnimationFrame(() => {
                 cheatModal.classList.add('modal-enter');
@@ -979,7 +1110,7 @@
             renderMath(document.getElementById(tabId));
         }
 
-        renderMath(document.body);
+        window.addEventListener('load', () => renderMath(document.body));
     </script>
 </body>
 </html>
